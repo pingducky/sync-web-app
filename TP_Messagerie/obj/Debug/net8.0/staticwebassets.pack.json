@@ -1,0 +1,29 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\antho\\OneDrive\\Documents\\Cours\\M1\\DesignPattern_Persistance\\Persistance\\TP_Messagerie\\TP_Messagerie\\TP_Messagerie\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\TP_Messagerie.bundle.scp.css",
+      "PackagePath": "staticwebassets\\TP_Messagerie.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\antho\\OneDrive\\Documents\\Cours\\M1\\DesignPattern_Persistance\\Persistance\\TP_Messagerie\\TP_Messagerie\\TP_Messagerie\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.TP_Messagerie.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.TP_Messagerie.props",
+      "PackagePath": "build\\TP_Messagerie.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.TP_Messagerie.props",
+      "PackagePath": "buildMultiTargeting\\TP_Messagerie.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.TP_Messagerie.props",
+      "PackagePath": "buildTransitive\\TP_Messagerie.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

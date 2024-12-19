@@ -1,0 +1,77 @@
+{
+  "Version": 1,
+  "Hash": "FLlQ15NHWeda3i+Y76CRcBgOELLB04NrwiN9vnK8wbs=",
+  "Source": "TP_Messagerie",
+  "BasePath": "_content/TP_Messagerie",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "TP_Messagerie\\wwwroot",
+      "Source": "TP_Messagerie",
+      "ContentRoot": "C:\\Users\\antho\\OneDrive\\Documents\\Cours\\M1\\DesignPattern_Persistance\\Persistance\\TP_Messagerie\\TP_Messagerie\\TP_Messagerie\\wwwroot\\",
+      "BasePath": "_content/TP_Messagerie",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\antho\\OneDrive\\Documents\\Cours\\M1\\DesignPattern_Persistance\\Persistance\\TP_Messagerie\\TP_Messagerie\\TP_Messagerie\\obj\\Debug\\net8.0\\scopedcss\\bundle\\TP_Messagerie.styles.css",
+      "SourceId": "TP_Messagerie",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\antho\\OneDrive\\Documents\\Cours\\M1\\DesignPattern_Persistance\\Persistance\\TP_Messagerie\\TP_Messagerie\\TP_Messagerie\\obj\\Debug\\net8.0\\scopedcss\\bundle\\",
+      "BasePath": "_content/TP_Messagerie",
+      "RelativePath": "TP_Messagerie.styles.css",
+      "AssetKind": "All",
+      "AssetMode": "CurrentProject",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ApplicationBundle",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\antho\\OneDrive\\Documents\\Cours\\M1\\DesignPattern_Persistance\\Persistance\\TP_Messagerie\\TP_Messagerie\\TP_Messagerie\\obj\\Debug\\net8.0\\scopedcss\\bundle\\TP_Messagerie.styles.css"
+    },
+    {
+      "Identity": "C:\\Users\\antho\\OneDrive\\Documents\\Cours\\M1\\DesignPattern_Persistance\\Persistance\\TP_Messagerie\\TP_Messagerie\\TP_Messagerie\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\TP_Messagerie.bundle.scp.css",
+      "SourceId": "TP_Messagerie",
+      "SourceType": "Computed",
+      "ContentRoot": "C:\\Users\\antho\\OneDrive\\Documents\\Cours\\M1\\DesignPattern_Persistance\\Persistance\\TP_Messagerie\\TP_Messagerie\\TP_Messagerie\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\",
+      "BasePath": "_content/TP_Messagerie",
+      "RelativePath": "TP_Messagerie.bundle.scp.css",
+      "AssetKind": "All",
+      "AssetMode": "Reference",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "ScopedCss",
+      "AssetTraitValue": "ProjectBundle",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "C:\\Users\\antho\\OneDrive\\Documents\\Cours\\M1\\DesignPattern_Persistance\\Persistance\\TP_Messagerie\\TP_Messagerie\\TP_Messagerie\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\TP_Messagerie.bundle.scp.css"
+    },
+    {
+      "Identity": "C:\\Users\\antho\\OneDrive\\Documents\\Cours\\M1\\DesignPattern_Persistance\\Persistance\\TP_Messagerie\\TP_Messagerie\\TP_Messagerie\\wwwroot\\app.css",
+      "SourceId": "TP_Messagerie",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\antho\\OneDrive\\Documents\\Cours\\M1\\DesignPattern_Persistance\\Persistance\\TP_Messagerie\\TP_Messagerie\\TP_Messagerie\\wwwroot\\",
+      "BasePath": "_content/TP_Messagerie",
+      "RelativePath": "app.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\app.css"
+    }
+  ]
+}
