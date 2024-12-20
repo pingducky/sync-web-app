@@ -8,11 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Cassandra configuration
 builder.Services.AddSingleton<Cassandra.ISession>(sp =>
 {
+    var secureConnectPath = Path.Combine(AppContext.BaseDirectory, "Properties", "secure-connect-tp-messagerie.zip");
     var cluster = Cluster.Builder()
-        .AddContactPoints("https://92500a2b-01c5-4475-9181-41120b08f93e-westus3.apps.astra.datastax.com")
-        .WithPort(9042)                
+        .WithCloudSecureConnectionBundle(secureConnectPath)
+        .WithCredentials("nMkNQtqMOSKhwRUUHXdQYfEK", "r0j,fZrULlTtsQX17_SQU0iEmSHYP2ANwZKgy+ZmQ38lHSPzGLezGRmyY3b2WyHc+NqrXhQKf+wye2NbHkzmRJpJjj2OWU87aTmDeGzg9s.foxDCRFtpJFmZRich4aD7")
         .Build();
-    return cluster.Connect("default_keyspace"); // Remplacez par votre keyspace Cassandra
+    return cluster.Connect("messagerie");
 });
 
 // MongoDB configuration
@@ -25,7 +26,7 @@ builder.Services.AddSingleton<IMongoClient>(sp =>
 builder.Services.AddSingleton<IMongoDatabase>(sp =>
 {
     var client = sp.GetRequiredService<IMongoClient>();
-    return client.GetDatabase("your_database");
+    return client.GetDatabase("sync-messagerie-app");
 });
 
 // Add services to the container.
@@ -53,11 +54,5 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
-
-
-app.MapControllerRoute(
-    name: "test",
-    pattern: "test",
-    defaults: new { controller = "Test", action = "Index" });
 
 app.Run();
