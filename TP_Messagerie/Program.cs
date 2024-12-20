@@ -40,6 +40,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<MessageService>();
+builder.Services.AddSingleton<AuthService>();
 
 var app = builder.Build();
 

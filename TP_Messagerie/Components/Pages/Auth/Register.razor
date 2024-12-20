@@ -1,0 +1,34 @@
+﻿@page "/register"
+@using TP_Messagerie.Services
+@inject AuthService AuthService
+@inject UserService UserService
+@inject NavigationManager NavigationManager
+
+<h3>Register</h3>
+
+<div class="card col-md-4 mb-4 container">
+    <h4 class="card-header">Inscription</h4>
+    <div class="card-body">
+        <EditForm Model="@credential" method="post" OnValidSubmit="OnValidSubmit">
+            <DataAnnotationsValidator />
+            <div class="form-group">
+                <label>Identifiant</label>
+                <InputText @bind-Value="credential.Username" class="form-control" />
+                <ValidationMessage For="@(() => credential.Username)" />
+            </div>
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <InputText @bind-Value="credential.Password" type="password" class="form-control" />
+                <ValidationMessage For="@(() => credential.Password)" />
+            </div>
+            <button disabled="@IsLoading" class="btn btn-primary">
+                @if (IsLoading)
+                {
+                    <span class="spinner-border spinner-border-sm mr-1"></span>
+                }
+                Inscription
+            </button>
+            <NavLink href="login" class="btn btn-link">Retour</NavLink>
+        </EditForm>
+    </div>
+</div>
