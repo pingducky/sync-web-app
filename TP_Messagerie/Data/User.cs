@@ -8,13 +8,21 @@ namespace TP_Messagerie.Data
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = null!;
+        public string Id { get; set; }
 
+        [BsonElement("username")]
         public string Username { get; set; } = null!;
 
-        public string Password { get; set; } = null!;
+        [BsonElement("email")]
+        public string Email { get; set; } = null!;
 
-        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
+        [BsonElement("createdAt")]
         public DateTime CreatedAt { get; set; }
+
+        [BsonElement("name")]
+        public string Name { get; set; } = null!;
+
+        [BsonElement("firstnamee")]
+        public string Firstname { get; set; } = null!;
     }
 }
