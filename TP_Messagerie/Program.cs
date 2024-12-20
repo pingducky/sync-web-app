@@ -2,6 +2,7 @@ using Cassandra;
 using MongoDB.Driver;
 using TP_Messagerie.Components;
 using MudBlazor.Services;
+using TP_Messagerie.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddControllers();
+
+builder.Services.AddSingleton<UserService>();
+builder.Services.AddSingleton<MessageService>();
 
 var app = builder.Build();
 

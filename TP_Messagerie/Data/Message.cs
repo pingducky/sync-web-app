@@ -8,15 +8,15 @@ namespace TP_Messagerie.Data
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
 
         [BsonRepresentation(BsonType.ObjectId)]
-        public string SenderId { get; set; }
+        public string SenderId { get; set; } = null!;
 
         [BsonRepresentation(BsonType.ObjectId)]
-        public string ReceiverId { get; set; }
+        public string ReceiverId { get; set; } = null!;
 
-        public string Content { get; set; }
+        public string Content { get; set; } = null!;
 
         [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime SentAt { get; set; }
