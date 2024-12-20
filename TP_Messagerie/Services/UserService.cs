@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using TP_Messagerie.Data;
 
 namespace TP_Messagerie.Services
@@ -23,6 +24,9 @@ namespace TP_Messagerie.Services
 
         public async Task<User?> GetUserByIdAsync(string id) =>
             await _users.Find(u => u.Id == id).FirstOrDefaultAsync();
+
+        public async Task<User?> GetUserByUsernameAsync(string username) =>
+            await _users.Find(u => u.Username == username).FirstOrDefaultAsync();
 
         public async Task<List<User>?> GetAllUsersAsync() =>
             await _users.Find(_ => true).ToListAsync();

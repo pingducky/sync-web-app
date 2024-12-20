@@ -1,0 +1,30 @@
+﻿@page "/login"
+@using TP_Messagerie.Services
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="d-flex justify-center align-center min-height-100">
+    <MudCard Class="pa-4" Style="width: 100%;">
+        <MudCardContent>
+            <h3 class="text-center">Connexion</h3>
+            <EditForm Model="@Credentials" method="post" OnValidSubmit="OnValidSubmit">
+                <DataAnnotationsValidator />
+                <MudTextField @bind-Value="Credentials.Username" Label="Identifiant" Variant="Variant.Filled" Required="true" />
+                <ValidationMessage For="@(() => Credentials.Username)" />
+                <MudTextField @bind-Value="Credentials.Password" Label="Mot de passe" Variant="Variant.Filled" InputType="InputType.Password" Required="true" />
+                <ValidationMessage For="@(() => Credentials.Password)" />
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4" Disabled="@Loading" FullWidth="true">
+                    @if (Loading)
+                    {
+                        <MudProgressCircular Indeterminate="true" Size="Size.Small" Class="mr-2" />
+                    }
+                    Connexion
+                </MudButton>
+                <MudText Class="mt-2" Color="Color.Error">@ErrorMessage</MudText>
+                <MudText Class="mt-2">
+                    <NavLink href="register">Pas de compte ? Créez en un ici !</NavLink>
+                </MudText>
+            </EditForm>
+        </MudCardContent>
+    </MudCard>
+</MudContainer>

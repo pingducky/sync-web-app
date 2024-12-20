@@ -12,7 +12,8 @@ namespace TP_Messagerie.Components.Pages.Auth
 
         public class Credential { public string Username { get; set; } = ""; public string Password { get; set; } = ""; }
         private Credential credential = new Credential();
-        private bool IsLoading { get; set; }
+        public bool IsLoading { get; set; }
+        public string? ErrorMessage { get; set; }
 
         #endregion
 
@@ -20,11 +21,11 @@ namespace TP_Messagerie.Components.Pages.Auth
         #region Methods
 
         /// <summary>
-        /// M�thode de validation du formulaire d'inscription.
+        /// Méthode de validation du formulaire d'inscription.
         /// </summary>
         private async void OnValidSubmit()
         {
-            var test = UserService.GetAllUsersAsync();
+            var test = await UserService.GetAllUsersAsync();
 
             IsLoading = true;
             User user = new User
@@ -34,8 +35,17 @@ namespace TP_Messagerie.Components.Pages.Auth
                 Password = credential.Password
             };
 
-            await AuthService.RegisterAsync(user);
-            NavigationManager.NavigateTo("/");
+            bool result = await AuthService.RegisterAsync(user);
+            if(result)
+            {
+                NavigationManager.NavigateTo("/");
+            }
+            else
+            {
+                ErrorMessage = "L'utilisateur existe déjà !";
+                IsLoading = false;
+            }
+
         }
 
         #endregion

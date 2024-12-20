@@ -4,31 +4,33 @@
 @inject UserService UserService
 @inject NavigationManager NavigationManager
 
-<h3>Register</h3>
+<MudContainer MaxWidth="MaxWidth.Small" Class="d-flex justify-center align-center min-height-100">
+    <MudCard Class="pa-4" Style="width: 100%;">
+        <MudCardContent>
+            <h3 class="text-center">Inscription</h3>
+            <EditForm Model="@credential" method="post" OnValidSubmit="OnValidSubmit">
+                <DataAnnotationsValidator />
 
-<div class="card col-md-4 mb-4 container">
-    <h4 class="card-header">Inscription</h4>
-    <div class="card-body">
-        <EditForm Model="@credential" method="post" OnValidSubmit="OnValidSubmit">
-            <DataAnnotationsValidator />
-            <div class="form-group">
-                <label>Identifiant</label>
-                <InputText @bind-Value="credential.Username" class="form-control" />
+                <MudTextField @bind-Value="credential.Username" Label="Identifiant" Variant="Variant.Filled" Required="true" />
                 <ValidationMessage For="@(() => credential.Username)" />
-            </div>
-            <div class="form-group">
-                <label>Mot de passe</label>
-                <InputText @bind-Value="credential.Password" type="password" class="form-control" />
+
+                <MudTextField @bind-Value="credential.Password" Label="Mot de passe" Variant="Variant.Filled" InputType="InputType.Password" Required="true" />
                 <ValidationMessage For="@(() => credential.Password)" />
-            </div>
-            <button disabled="@IsLoading" class="btn btn-primary">
-                @if (IsLoading)
-                {
-                    <span class="spinner-border spinner-border-sm mr-1"></span>
-                }
-                Inscription
-            </button>
-            <NavLink href="login" class="btn btn-link">Retour</NavLink>
-        </EditForm>
-    </div>
-</div>
+
+                <MudText Class="mt-2" Color="Color.Error">@ErrorMessage</MudText>
+
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4" Disabled="@IsLoading" FullWidth="true">
+                    @if (IsLoading)
+                    {
+                        <MudProgressCircular Indeterminate="true" Size="Size.Small" Class="mr-2" />
+                    }
+                    Inscription
+                </MudButton>
+
+                <MudText Class="mt-2">
+                    <NavLink href="login">Connexion</NavLink>
+                </MudText>
+            </EditForm>
+        </MudCardContent>
+    </MudCard>
+</MudContainer>
