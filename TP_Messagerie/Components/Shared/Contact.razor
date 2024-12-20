@@ -1,0 +1,64 @@
+﻿@using MudBlazor
+
+<MudPaper Elevation="2" Class="ma-2">
+    <MudContainer Class="contact-preview">
+        <MudAvatar Size="Size.Large" Color="Color.Primary">
+            @Initials
+        </MudAvatar>
+        <MudContainer>
+            <MudText Typography="Typo.h6" FontWeight="FontWeight.Bold" Class="truncate-text">@RecipientName</MudText>
+            <MudText Class="truncate-text">@PreviewText</MudText>
+        </MudContainer>
+        <MudContainer Class="time-notif">
+            <MudText>@MessageTime</MudText>
+            <MudText>
+                @if (NotificationCount > 0)
+                {
+                    <MudBadge Content="@NotificationCount" Overlap="true" Class="mt-2">
+                        <MudIcon Icon="@Icons.Material.Filled.Email" Size="Size.Medium" Color="Color.Default" />
+                    </MudBadge>
+                }
+            </MudText>
+        </MudContainer>
+    </MudContainer>
+</MudPaper>
+
+@code {
+    [Parameter]
+    public string FirstName { get; set; } = string.Empty;
+
+    [Parameter]
+    public string LastName { get; set; } = string.Empty;
+
+    [Parameter]
+    public string RecipientName { get; set; } = string.Empty;
+
+    [Parameter]
+    public string MessageTime { get; set; } = string.Empty;
+
+    [Parameter]
+    public string PreviewText { get; set; } = string.Empty;
+
+    [Parameter]
+    public int NotificationCount { get; set; } = 0;
+
+    private string Initials => string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName)
+        ? string.Empty
+        : $"{FirstName[0]}{LastName[0]}".ToUpper();
+}
+
+<style>
+    .contact-preview {
+        display: flex;
+        padding: 15px;
+        height: 105px;
+        justify-content: space-between;
+    }
+
+    .truncate-text {
+        max-width: 90%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>

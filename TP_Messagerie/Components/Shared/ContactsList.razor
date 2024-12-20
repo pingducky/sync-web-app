@@ -1,0 +1,38 @@
+﻿@page "/contacts-list"
+@using TP_Messagerie.Data
+@using MudBlazor
+
+<MudPaper Elevation="4" Class="contacts-list-paper" Style="height: 100vh; display: flex; flex-direction: column;">
+    <MudContainer>
+        @if (Conversations != null && Conversations.Any())
+        {
+            @foreach (var conversation in Conversations)
+            {
+                var participant = GetOtherParticipant(conversation); // Trouver un participant qui n'est pas l'utilisateur actuel
+                var lastMessageTime = conversation.LastUpdated.ToString("HH:mm"); // Formater l'heure du dernier message
+                var notificationCount = 5; // Remplacer par la vrai valeur
+
+                <Contact FirstName="@participant.Firstname"
+                         LastName="@participant.Name"
+                         RecipientName="@participant.Username"
+                         PreviewText="@conversation.LastMessage"
+                         MessageTime="@lastMessageTime"
+                         NotificationCount="@notificationCount" />
+            }
+        }
+        else
+        {
+            <MudText>Aucun contact disponible.</MudText>
+        }
+    </MudContainer>
+</MudPaper>
+
+@code {
+    [Parameter]
+    public List<Conversation> Conversations { get; set; } = new List<Conversation>();
+
+    private Participant GetOtherParticipant(Conversation conversation)
+    {
+        return conversation.Participants.FirstOrDefault(p => p.Firstname != "John") ?? conversation.Participants.First(); // Todo : remplacer John par le vrai nom de l'user
+    }
+}

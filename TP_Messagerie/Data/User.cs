@@ -22,7 +22,10 @@ namespace TP_Messagerie.Data
         [BsonElement("name")]
         public string Name { get; set; } = null!;
 
-        [BsonElement("firstnamee")]
+        [BsonElement("firstname")]
         public string Firstname { get; set; } = null!;
+
+        [BsonElement("password")]
+        public string Password { get; set; } = null!;
     }
 }

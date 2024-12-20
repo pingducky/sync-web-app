@@ -1,7 +1,47 @@
 ﻿@page "/"
+@using MudBlazor
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<ContactsList Conversations="@FictitiousConversations" />
+
+@code {
+    private List<Conversation> FictitiousConversations = new List<Conversation>
+    {
+        new Conversation
+        {
+            Id = "1",
+            LastMessage = "Salut, comment ça va ?",
+            LastUpdated = DateTime.Now.AddMinutes(-10),
+            Participants = new List<Participant>
+            {
+                new Participant { Firstname = "John", Name = "Doe", Username = "johndoe" },
+                new Participant { Firstname = "Jane", Name = "Smith", Username = "janesmith" }
+            }
+        },
+        new Conversation
+        {
+            Id = "2",
+            LastMessage = "On se retrouve demain à 18h.",
+            LastUpdated = DateTime.Now.AddHours(-1),
+            Participants = new List<Participant>
+            {
+                new Participant { Firstname = "Alice", Name = "Johnson", Username = "alicejohnson" },
+                new Participant { Firstname = "Bob", Name = "Brown", Username = "bobbrown" }
+            }
+        },
+        new Conversation
+        {
+            Id = "3",
+            LastMessage = "Tu m'as envoyé le fichier ?",
+            LastUpdated = DateTime.Now.AddMinutes(-30),
+            Participants = new List<Participant>
+            {
+                new Participant { Firstname = "Charlie", Name = "Davis", Username = "charliedavis" },
+                new Participant { Firstname = "Eva", Name = "Wilson", Username = "evawilson" }
+            }
+        }
+    };
+
+}
