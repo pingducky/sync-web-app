@@ -27,7 +27,7 @@ builder.Services.AddSingleton<IMongoClient>(sp =>
 builder.Services.AddSingleton<IMongoDatabase>(sp =>
 {
     var client = sp.GetRequiredService<IMongoClient>();
-    return client.GetDatabase("sync-messagerie-app");
+    return client.GetDatabase("sync-message-app");
 });
 
 // Add services to the container.
