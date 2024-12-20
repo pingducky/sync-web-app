@@ -27,7 +27,7 @@ builder.Services.AddSingleton<IMongoClient>(sp =>
 builder.Services.AddSingleton<IMongoDatabase>(sp =>
 {
     var client = sp.GetRequiredService<IMongoClient>();
-    return client.GetDatabase("sync-messagerie-app");
+    return client.GetDatabase("sync-message-app");
 });
 
 // Add services to the container.
@@ -40,6 +40,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<MessageService>();
+builder.Services.AddSingleton<AuthService>();
 
 var app = builder.Build();
 

@@ -26,7 +26,7 @@ namespace TP_Messagerie.Services
 
         public async Task<bool> RegisterAsync(User user)
         {
-            var existingUser = await _userService.GetUserByIdAsync(user.Id);
+            var existingUser = await _userService.GetUserByUsernameAsync(user.Username);
             if (existingUser != null)
             {
                 return false;
