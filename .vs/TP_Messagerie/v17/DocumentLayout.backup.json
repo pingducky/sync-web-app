@@ -1,7 +1,16 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\antho\\OneDrive\\Documents\\Cours\\M1\\DesignPattern_Persistance\\Persistance\\TP_Messagerie\\TP_Messagerie\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\PRIVE\\Cours\\Persistence\\sync-web-app\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C651A220-53B2-4F14-9902-09066616A452}|TP_Messagerie\\TP_Messagerie.csproj|c:\\prive\\cours\\persistence\\sync-web-app\\tp_messagerie\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{C651A220-53B2-4F14-9902-09066616A452}|TP_Messagerie\\TP_Messagerie.csproj|solutionrelative:tp_messagerie\\components\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C651A220-53B2-4F14-9902-09066616A452}|TP_Messagerie\\TP_Messagerie.csproj|c:\\prive\\cours\\persistence\\sync-web-app\\tp_messagerie\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C651A220-53B2-4F14-9902-09066616A452}|TP_Messagerie\\TP_Messagerie.csproj|solutionrelative:tp_messagerie\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -26,6 +35,32 @@
             {
               "$type": "Bookmark",
               "Name": "ST:130:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainLayout.razor",
+              "DocumentMoniker": "C:\\PRIVE\\Cours\\Persistence\\sync-web-app\\TP_Messagerie\\Components\\Layout\\MainLayout.razor",
+              "RelativeDocumentMoniker": "TP_Messagerie\\Components\\Layout\\MainLayout.razor",
+              "ToolTip": "C:\\PRIVE\\Cours\\Persistence\\sync-web-app\\TP_Messagerie\\Components\\Layout\\MainLayout.razor",
+              "RelativeToolTip": "TP_Messagerie\\Components\\Layout\\MainLayout.razor",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-12-20T10:09:29.245Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\PRIVE\\Cours\\Persistence\\sync-web-app\\TP_Messagerie\\Program.cs",
+              "RelativeDocumentMoniker": "TP_Messagerie\\Program.cs",
+              "ToolTip": "C:\\PRIVE\\Cours\\Persistence\\sync-web-app\\TP_Messagerie\\Program.cs",
+              "RelativeToolTip": "TP_Messagerie\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-20T10:08:48.619Z",
+              "EditorCaption": ""
             }
           ]
         }
