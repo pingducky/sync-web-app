@@ -1,0 +1,17 @@
+﻿.contact-preview {
+    display: flex;
+    padding: 15px;
+    height: 105px;
+    justify-content: space-between;
+}
+
+.truncate-text {
+    max-width: 90%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.time-notif {
+    width: auto;
+}

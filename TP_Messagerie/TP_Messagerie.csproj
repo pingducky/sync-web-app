@@ -12,8 +12,9 @@
     <PackageReference Include="MudBlazor" Version="7.15.0" />
   </ItemGroup>
 
-  <ItemGroup>
+<ItemGroup>
     <Folder Include="Services\" />
-  </ItemGroup>
+    <Content Update="**\*.razor.css" CopyToOutputDirectory="PreserveNewest" />
+</ItemGroup>
 
 </Project>

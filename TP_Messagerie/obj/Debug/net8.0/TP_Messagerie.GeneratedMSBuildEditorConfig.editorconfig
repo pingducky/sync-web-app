@@ -47,10 +47,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/PRIVE/Cours/Persistence/sync-web-app/TP_Messagerie/Components/Shared/Contact.razor]
-build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29udGFjdC5yYXpvcg==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/PRIVE/Cours/Persistence/sync-web-app/TP_Messagerie/Components/Shared/ContactsList.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29udGFjdHNMaXN0LnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
@@ -62,3 +58,7 @@ build_metadata.AdditionalFiles.CssScope =
 [C:/PRIVE/Cours/Persistence/sync-web-app/TP_Messagerie/Components/Layout/MainLayout.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = b-g8xw7zqu8g
+
+[C:/PRIVE/Cours/Persistence/sync-web-app/TP_Messagerie/Components/Shared/Contact.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcQ29udGFjdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-tva2deffth

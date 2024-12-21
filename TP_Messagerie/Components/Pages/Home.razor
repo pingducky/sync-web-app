@@ -3,8 +3,64 @@
 
 <PageTitle>Home</PageTitle>
 
+<MudContainer Class="messagerie-container pa-0">
+    <MudItem xs="12" sm="4" Class="contacts-list-container">
+        <ContactsList Conversations="@Conversations" />
+    </MudItem>
+    <MudItem xs="12" sm="8" Class="message-display-container">
+        <MudPaper Elevation="4" Class="message-paper">
+        </MudPaper>
+    </MudItem>
+</MudContainer>
 
-<ContactsList Conversations="@FictitiousConversations" />
+
+@code {
+    private List<Conversation> Conversations = new List<Conversation>
+    {
+        new Conversation
+        {
+            Participants = new List<Participant>
+            {
+                new Participant { Firstname = "Alice", Name = "Doe", Username = "alice.doe" },
+                new Participant { Firstname = "John", Name = "Smith", Username = "john.smith" }
+            },
+            LastMessage = "Bonjour!",
+            LastUpdated = DateTime.Now
+        },
+        new Conversation
+        {
+            Participants = new List<Participant>
+            {
+                new Participant { Firstname = "Bob", Name = "Marley", Username = "bob.marley" },
+                new Participant { Firstname = "John", Name = "Smith", Username = "john.smith" }
+            },
+            LastMessage = "Comment ça va?",
+            LastUpdated = DateTime.Now.AddMinutes(-30)
+        }
+    };
+}
+
+<style>
+    .messagerie-container {
+        display: flex;
+        flex-direction: row;
+        height: 100vh;
+        max-width: none;
+    }
+
+    .contacts-list-container {
+        width: 40%;
+        border-right: 1px solid var(--mud-palette-grey-lighten-2);
+    }
+
+    .message-display-container {
+        flex-grow: 1;
+    }
+
+    .message-paper {
+        height: 100%;
+    }
+</style>
 
 @code {
     private List<Conversation> FictitiousConversations = new List<Conversation>

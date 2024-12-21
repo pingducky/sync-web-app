@@ -2,8 +2,8 @@
 @using TP_Messagerie.Data
 @using MudBlazor
 
-<MudPaper Elevation="4" Class="contacts-list-paper" Style="height: 100vh; display: flex; flex-direction: column;">
-    <MudContainer>
+<MudPaper Elevation="4" Class="contacts-list-paper ma-2">
+    <MudContainer Class="pa-1">
         @if (Conversations != null && Conversations.Any())
         {
             @foreach (var conversation in Conversations)
@@ -36,3 +36,11 @@
         return conversation.Participants.FirstOrDefault(p => p.Firstname != "John") ?? conversation.Participants.First(); // Todo : remplacer John par le vrai nom de l'user
     }
 }
+
+<style>
+    .contacts-list-paper {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+</style>

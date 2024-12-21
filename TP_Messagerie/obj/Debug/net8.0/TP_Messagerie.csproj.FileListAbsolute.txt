@@ -57,3 +57,4 @@ C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\refint\TP
 C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\TP_Messagerie.pdb
 C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\TP_Messagerie.genruntimeconfig.cache
 C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\ref\TP_Messagerie.dll
+C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\scopedcss\Components\Shared\Contact.razor.rz.scp.css
