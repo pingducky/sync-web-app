@@ -9,6 +9,7 @@
     </MudItem>
     <MudItem xs="12" sm="8" Class="message-display-container">
         <MudPaper Elevation="4" Class="message-paper">
+            <ConversationMessages ConversationName="test" Messages="@Messages" />
         </MudPaper>
     </MudItem>
 </MudContainer>
@@ -38,31 +39,16 @@
             LastUpdated = DateTime.Now.AddMinutes(-30)
         }
     };
-}
 
-<style>
-    .messagerie-container {
-        display: flex;
-        flex-direction: row;
-        height: 100vh;
-        max-width: none;
-    }
+    private List<Components.Shared.ConversationMessages.MessageModel> Messages = new List<Components.Shared.ConversationMessages.MessageModel>{
+        new Components.Shared.ConversationMessages.MessageModel {
+            Sender = "Hugo",
+            Content = "Salut comment tu va ?",
+            TimeStamp = DateTime.Now,
+        },
+    };
 
-    .contacts-list-container {
-        width: 40%;
-        border-right: 1px solid var(--mud-palette-grey-lighten-2);
-    }
 
-    .message-display-container {
-        flex-grow: 1;
-    }
-
-    .message-paper {
-        height: 100%;
-    }
-</style>
-
-@code {
     private List<Conversation> FictitiousConversations = new List<Conversation>
     {
         new Conversation
@@ -99,5 +85,26 @@
             }
         }
     };
-
 }
+
+<style>
+    .messagerie-container {
+        display: flex;
+        flex-direction: row;
+        height: 100vh;
+        max-width: none;
+    }
+
+    .contacts-list-container {
+        width: 40%;
+        border-right: 1px solid var(--mud-palette-grey-lighten-2);
+    }
+
+    .message-display-container {
+        flex-grow: 1;
+    }
+
+    .message-paper {
+        height: 100%;
+    }
+</style>

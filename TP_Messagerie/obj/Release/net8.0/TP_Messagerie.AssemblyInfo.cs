@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TP_Messagerie")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7a246946811af52386242c4b524756e40db72f20")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1d08b89e541a4618ac4e1fd98c84ccb772a89010")]
 [assembly: System.Reflection.AssemblyProductAttribute("TP_Messagerie")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TP_Messagerie")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

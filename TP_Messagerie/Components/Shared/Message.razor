@@ -1,0 +1,27 @@
+﻿@using MudBlazor
+
+<MudPaper Elevation="1" Class="message pa-2">
+    <MudText Typo="Typo.body1" Class="message-sender">@Sender</MudText>
+    <MudText Typo="Typo.body2" Class="message-content">@Content</MudText>
+    <MudText Typo="Typo.caption" Class="message-time">@TimeStamp.ToString("HH:mm")</MudText>
+</MudPaper>
+
+@code {
+    [Parameter]
+    public required string Sender { get; set; }
+    [Parameter]
+    public required string Content { get; set; }
+    [Parameter]
+    public DateTime TimeStamp { get; set; }
+    [Parameter]
+    public bool IsSentByCurrentUser { get; set; }  // Todo: ternaire align item ou autre
+}
+
+<style>
+    .message {
+        margin-bottom: 10px;
+        width: 30%;
+        color: white;
+        background-color: cornflowerblue;
+    }
+</style>

@@ -1,0 +1,81 @@
+﻿@using MudBlazor
+
+<MudContainer Class="chat-container">
+    <MudItem xs="12" Class="message-box">
+        @foreach (var message in Messages)
+        {
+            <Message Sender="@message.Sender"
+                     Content="@message.Content"
+                     TimeStamp="@message.TimeStamp"
+                     IsSentByCurrentUser="@(message.Sender == CurrentUser)" />
+        }
+    </MudItem>
+
+    <MudContainer Class="input-container">
+        <MudTextField @bind-Value="newMessageContent" Label="Type a message" FullWidth="true" />
+        <MudButton OnClick="SendMessage" Color="Color.Primary" FullWidth="true">Send</MudButton>
+    </MudContainer>
+</MudContainer>
+
+@code {
+    [Parameter]
+    public required string ConversationName { get; set; }
+    [Parameter]
+    public required List<MessageModel> Messages { get; set; }
+
+    private string newMessageContent = string.Empty;
+    private string CurrentUser = "You";
+
+    private void SendMessage()
+    {
+        if (!string.IsNullOrEmpty(newMessageContent))
+        {
+            var newMessage = new MessageModel
+                {
+                    Sender = CurrentUser,
+                    Content = newMessageContent,
+                    TimeStamp = DateTime.Now
+                };
+            Messages.Add(newMessage);
+            newMessageContent = string.Empty;
+        }
+    }
+
+    public class MessageModel
+    {
+        public required string Sender { get; set; }
+        public required string Content { get; set; }
+        public DateTime TimeStamp { get; set; }
+    }
+}
+
+<style>
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    .message-box {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 10px;
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .input-container {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        border-top: 1px solid #ddd;
+    }
+
+    .mud-text-field {
+        margin-bottom: 10px;
+    }
+
+    .mud-button {
+        margin-top: 10px;
+    }
+</style>
