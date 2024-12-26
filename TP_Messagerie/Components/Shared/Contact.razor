@@ -31,16 +31,16 @@
     public string LastName { get; set; } = string.Empty;
 
     [Parameter]
-    public string RecipientName { get; set; } = string.Empty;
+    public string? RecipientName { get; set; } = string.Empty;
 
     [Parameter]
-    public string MessageTime { get; set; } = string.Empty;
+    public string? MessageTime { get; set; } = string.Empty;
 
     [Parameter]
-    public string PreviewText { get; set; } = string.Empty;
+    public string? PreviewText { get; set; } = string.Empty;
 
     [Parameter]
-    public int NotificationCount { get; set; } = 0;
+    public int? NotificationCount { get; set; } = 0;
 
     private string Initials => string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName)
         ? string.Empty

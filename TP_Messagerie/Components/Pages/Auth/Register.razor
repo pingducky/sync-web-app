@@ -5,32 +5,35 @@
 @inject NavigationManager NavigationManager
 
 <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex justify-center align-center min-height-100">
-    <MudCard Class="pa-4" Style="width: 100%;">
-        <MudCardContent>
-            <h3 class="text-center">Inscription</h3>
-            <EditForm Model="@credential" method="post" OnValidSubmit="OnValidSubmit">
-                <DataAnnotationsValidator />
+  <MudCard Class="pa-4" Style="width: 100%;">
+    <MudCardContent>
+      <h3 class="text-center">Inscription</h3>
+      <EditForm Model="@credential" method="post" OnValidSubmit="OnValidSubmit">
+        <DataAnnotationsValidator />
 
-                <MudTextField @bind-Value="credential.Username" Label="Identifiant" Variant="Variant.Filled" Required="true" />
-                <ValidationMessage For="@(() => credential.Username)" />
+        <MudTextField @bind-Value="credential.Username" Label="Identifiant" Variant="Variant.Filled" Required="true" />
+        <ValidationMessage For="@(() => credential.Username)" />
 
-                <MudTextField @bind-Value="credential.Password" Label="Mot de passe" Variant="Variant.Filled" InputType="InputType.Password" Required="true" />
-                <ValidationMessage For="@(() => credential.Password)" />
+        <MudTextField @bind-Value="credential.Firstname" Label="Prénom" Variant="Variant.Filled" Required="true"  Class="mt-4" /> <ValidationMessage For="@(() => credential.Firstname)" />
 
-                <MudText Class="mt-2" Color="Color.Error">@ErrorMessage</MudText>
+        <MudTextField @bind-Value="credential.Name" Label="Nom" Variant="Variant.Filled" Required="true" Class="mt-4" /> <ValidationMessage For="@(() => credential.Name)" />
 
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4" Disabled="@IsLoading" FullWidth="true">
-                    @if (IsLoading)
-                    {
-                        <MudProgressCircular Indeterminate="true" Size="Size.Small" Class="mr-2" />
-                    }
-                    Inscription
-                </MudButton>
+        <MudTextField @bind-Value="credential.Password" Label="Mot de passe" Variant="Variant.Filled" InputType="InputType.Password" Required="true" Class="mt-4" /> <ValidationMessage For="@(() => credential.Password)" />
 
-                <MudText Class="mt-2">
-                    <NavLink href="login">Connexion</NavLink>
-                </MudText>
-            </EditForm>
-        </MudCardContent>
-    </MudCard>
+        <MudText Class="mt-2" Color="Color.Error">@ErrorMessage</MudText>
+
+        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4" Disabled="@IsLoading" FullWidth="true">
+          @if (IsLoading)
+          {
+            <MudProgressCircular Indeterminate="true" Size="Size.Small" Class="mr-2" />
+          }
+          Inscription
+        </MudButton>
+
+        <MudText Class="mt-2">
+          <NavLink href="login">Connexion</NavLink>
+        </MudText>
+      </EditForm>
+    </MudCardContent>
+  </MudCard>
 </MudContainer>

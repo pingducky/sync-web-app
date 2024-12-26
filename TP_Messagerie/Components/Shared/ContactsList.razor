@@ -1,22 +1,18 @@
 ﻿@using TP_Messagerie.Data
 @using MudBlazor
+@using TP_Messagerie.Services
+@inject UserService UserService
 
 <MudPaper Elevation="4" Class="contacts-list-paper ma-2">
-    <MudContainer Class="pa-1">
-        @if (Conversations != null && Conversations.Any())
+    <MudContainer Class="pa-1 contact-list-container">
+        @if (contacts != null && contacts.Any())
         {
-            @foreach (var conversation in Conversations)
+            @foreach (var user in contacts)
             {
-                var participant = GetOtherParticipant(conversation); // Trouver un participant qui n'est pas l'utilisateur actuel
-                var lastMessageTime = conversation.LastUpdated.ToString("HH:mm"); // Formater l'heure du dernier message
-                var notificationCount = 5; // Remplacer par la vrai valeur
-
-                <Contact FirstName="@participant.Firstname"
-                         LastName="@participant.Name"
-                         RecipientName="@participant.Username"
-                         PreviewText="@conversation.LastMessage"
-                         MessageTime="@lastMessageTime"
-                         NotificationCount="@notificationCount" />
+                <Contact
+                FirstName="@user.Firstname"
+                LastName="@user.Name"
+                RecipientName="@user.Username"/>
             }
         }
         else
@@ -29,10 +25,16 @@
 @code {
     [Parameter]
     public List<Conversation> Conversations { get; set; } = new List<Conversation>();
+    private List<User> contacts { get; set; } = new List<User>();
+
 
     private Participant GetOtherParticipant(Conversation conversation)
     {
         return conversation.Participants.FirstOrDefault(p => p.Firstname != "John") ?? conversation.Participants.First(); // Todo : remplacer John par le vrai nom de l'user
+    }
+
+    protected override async Task OnInitializedAsync() {
+        contacts = await UserService.GetAllUsersAsync();
     }
 }
 
@@ -41,5 +43,9 @@
         height: 100vh;
         display: flex;
         flex-direction: column;
+    }
+
+    .contact-list-container {
+        overflow-y: auto
     }
 </style>

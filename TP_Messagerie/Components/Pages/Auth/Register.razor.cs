@@ -10,7 +10,13 @@ namespace TP_Messagerie.Components.Pages.Auth
     {
         #region Parameters
 
-        public class Credential { public string Username { get; set; } = ""; public string Password { get; set; } = ""; }
+        public class Credential {
+            public string Username { get; set; } = "";
+            public string Password { get; set; } = "";
+            public string Firstname { get; set; } = "";
+            public string Lastname { get; set; } = "";
+            public string Name { get; set; } = "";
+        }
         private Credential credential = new Credential();
         public bool IsLoading { get; set; }
         public string? ErrorMessage { get; set; }
@@ -32,7 +38,9 @@ namespace TP_Messagerie.Components.Pages.Auth
             {
                 Id = ObjectId.GenerateNewId().ToString(),
                 Username = credential.Username,
-                Password = credential.Password
+                Password = credential.Password,
+                Firstname = credential.Firstname,
+                Name = credential.Name,
             };
 
             bool result = await AuthService.RegisterAsync(user);
