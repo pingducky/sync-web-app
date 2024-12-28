@@ -10,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Ajouter le service UserSession
 builder.Services.AddScoped<UserSession>();
 
+
+builder.Services.AddScoped<ConversationService>();
+
 // Cassandra configuration
 builder.Services.AddSingleton<Cassandra.ISession>(sp =>
 {

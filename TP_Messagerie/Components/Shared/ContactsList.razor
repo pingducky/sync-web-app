@@ -2,6 +2,8 @@
 @using MudBlazor
 @using TP_Messagerie.Services
 @inject UserService UserService
+@inject ConversationService ConversationService
+@inject UserSession UserSession
 
 <MudPaper Elevation="4" Class="contacts-list-paper ma-2">
     <MudContainer Class="pa-1 contact-list-container">
@@ -9,10 +11,14 @@
         {
             @foreach (var user in contacts)
             {
-                <Contact
-                FirstName="@user.Firstname"
-                LastName="@user.Name"
-                RecipientName="@user.Username"/>
+                @if (UserSession.UserName != user.Username)
+                {
+                    <Contact FirstName="@user.Firstname"
+                             LastName="@user.Name"
+                             RecipientName="@user.Username"
+                             PreviewText="@getMatchedConversation(user.Username)"
+                             OnClick="() => HandleContactClick(user.Username)" />
+                }
             }
         }
         else
@@ -23,20 +29,34 @@
 </MudPaper>
 
 @code {
-    [Parameter]
-    public List<Conversation> Conversations { get; set; } = new List<Conversation>();
     private List<User> contacts { get; set; } = new List<User>();
+    private List<Conversation> conversations { get; set; } = new List<Conversation>();
 
+    [Parameter]
+    public EventCallback<string> OnContactSelected { get; set; }
 
-    private Participant GetOtherParticipant(Conversation conversation)
+    protected override async Task OnInitializedAsync()
     {
-        return conversation.Participants.FirstOrDefault(p => p.Firstname != "John") ?? conversation.Participants.First(); // Todo : remplacer John par le vrai nom de l'user
+        contacts = await UserService.GetAllUsersAsync();
+        conversations = await ConversationService.GetConversationsForCurrentUserAsync();
     }
 
-    protected override async Task OnInitializedAsync() {
-        contacts = await UserService.GetAllUsersAsync();
+    private string getMatchedConversation(string username)
+    {
+        var conversation = conversations.FirstOrDefault(convo =>
+            convo.Participants.Any(p => p == username)
+        );
+
+        return conversation?.LastMessage ?? string.Empty; // Dernier message ou chaîne vide
+    }
+
+    // Cette méthode est appelée lors du clic sur un contact
+    private async Task HandleContactClick(string recipientName)
+    {
+        await OnContactSelected.InvokeAsync(recipientName);
     }
 }
+
 
 <style>
     .contacts-list-paper {

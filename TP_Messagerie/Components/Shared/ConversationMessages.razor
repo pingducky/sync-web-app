@@ -1,14 +1,20 @@
 ﻿@using MudBlazor
+@using TP_Messagerie.Data
+@using TP_Messagerie.Services
 
+@inject MessageService MessageService
+@inject UserSession UserSession
+
+<p> Receiver : @RecipientName</p>
 <MudContainer Class="chat-container">
     <MudItem xs="12" Class="message-box">
-        @foreach (var message in Messages)
-        {
-            <Message Sender="@message.Sender"
-                     Content="@message.Content"
-                     TimeStamp="@message.TimeStamp"
-                     IsSentByCurrentUser="@(message.Sender == CurrentUser)" />
-        }
+        @* @foreach (var message in Messages) *@
+        @* { *@
+        @*     <Message Sender="@message.Sender" *@
+        @*     Content="@message.Content" *@
+        @*     TimeStamp="@message.TimeStamp" *@
+        @*     IsSentByCurrentUser="@(message.Sender == UserSession.UserName)" /> *@
+        @* } *@
     </MudItem>
 
     <MudContainer Class="input-container">
@@ -21,32 +27,34 @@
     [Parameter]
     public required string ConversationName { get; set; }
     [Parameter]
-    public required List<MessageModel> Messages { get; set; }
+    public required List<MessageCollection> Messages { get; set; }
+    [Parameter]
+    public required string RecipientName { get; set; }
 
     private string newMessageContent = string.Empty;
-    private string CurrentUser = "You";
 
     private void SendMessage()
     {
         if (!string.IsNullOrEmpty(newMessageContent))
         {
-            var newMessage = new MessageModel
-                {
-                    Sender = CurrentUser,
-                    Content = newMessageContent,
-                    TimeStamp = DateTime.Now
-                };
-            Messages.Add(newMessage);
+            // MessageCollection newMessage = new MessageCollection
+            //     {
+            //         Sender = UserSession.UserName,
+            //         Receiver =
+            //     };
+
+            // Messages.Add(newMessage);
+            // MessageService.SendMessageAsync();
             newMessageContent = string.Empty;
         }
     }
 
-    public class MessageModel
-    {
-        public required string Sender { get; set; }
-        public required string Content { get; set; }
-        public DateTime TimeStamp { get; set; }
-    }
+    // public class MessageModel
+    // {
+    //     public required string Sender { get; set; }
+    //     public required string Content { get; set; }
+    //     public DateTime TimeStamp { get; set; }
+    // }
 }
 
 <style>

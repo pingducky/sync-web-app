@@ -5,6 +5,7 @@
         public string? UserId { get; set; } = null;
         public string? UserName { get; set; } = null;
         public string? Email { get; set; } = null;
+        public string? Receiver { get; set; } = null;
         public bool IsAuthenticated { get; set; } = false;
 
         public void Clear()

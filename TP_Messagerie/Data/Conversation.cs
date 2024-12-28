@@ -7,13 +7,16 @@ namespace TP_Messagerie.Data
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
 
         [BsonElement("participants")]
-        public List<Participant> Participants { get; set; } = null!;
-
+        public List<string> Participants { get; set; } = null!;
+            
         [BsonElement("lastMessage")]
         public string LastMessage { get; set; } = null!;
+
+        [BsonElement("lastUserMessage")]
+        public string LastUserMessage { get; set; } = null!;
 
         [BsonElement("lastUpdated")]
         public DateTime LastUpdated { get; set; }

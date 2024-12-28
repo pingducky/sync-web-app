@@ -4,19 +4,17 @@ using System;
 
 namespace TP_Messagerie.Data
 {
-    public class Message
+    public class MessageCollection
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string Id { get; set; } = null!;
 
-        [BsonElement("senderId")]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string SenderId { get; set; } = null!;
+        [BsonElement("sender")]
+        public string Sender { get; set; } = null!;
 
-        [BsonElement("receiverId")]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string ReceiverId { get; set; } = null!;
+        [BsonElement("receiver")]
+        public string Receiver { get; set; } = null!;
 
         [BsonElement("content")]
         public string Content { get; set; } = null!;

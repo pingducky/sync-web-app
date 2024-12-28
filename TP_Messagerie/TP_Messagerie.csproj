@@ -13,7 +13,6 @@
   </ItemGroup>
 
 <ItemGroup>
-    <Folder Include="Services\" />
     <Content Update="**\*.razor.css" CopyToOutputDirectory="PreserveNewest" />
 </ItemGroup>
 

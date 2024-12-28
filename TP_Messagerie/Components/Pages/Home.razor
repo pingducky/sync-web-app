@@ -7,101 +7,39 @@
 <PageTitle>Home</PageTitle>
 
 <MudContainer Class="messagerie-container pa-0">
+
     <MudItem xs="12" sm="4" Class="contacts-list-container">
-        <ContactsList Conversations="@Conversations" />
+        <ContactsList OnContactSelected="HandleContactSelected" />
     </MudItem>
     <MudItem xs="12" sm="8" Class="message-display-container">
         <MudPaper Elevation="4" Class="message-paper">
-            <ConversationMessages ConversationName="test" Messages="@Messages" />
+            <ConversationMessages ConversationName="test" RecipientName="@RecipientName" Messages="@Messages" />
         </MudPaper>
     </MudItem>
 </MudContainer>
 
 
 @code {
-    private List<Conversation> Conversations = new List<Conversation>
+    private List<MessageCollection> Messages = new List<MessageCollection>();
+    private string RecipientName { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
     {
-        new Conversation
+        if (UserSession.IsAuthenticated)
         {
-            Participants = new List<Participant>
-            {
-                new Participant { Firstname = "Alice", Name = "Doe", Username = "alice.doe" },
-                new Participant { Firstname = "John", Name = "Smith", Username = "john.smith" }
-            },
-            LastMessage = "Bonjour!",
-            LastUpdated = DateTime.Now
-        },
-        new Conversation
-        {
-            Participants = new List<Participant>
-            {
-                new Participant { Firstname = "Bob", Name = "Marley", Username = "bob.marley" },
-                new Participant { Firstname = "John", Name = "Smith", Username = "john.smith" }
-            },
-            LastMessage = "Comment ça va?",
-            LastUpdated = DateTime.Now.AddMinutes(-30)
-        }
-    };
-
-    private List<Components.Shared.ConversationMessages.MessageModel> Messages = new List<Components.Shared.ConversationMessages.MessageModel>{
-        new Components.Shared.ConversationMessages.MessageModel {
-            Sender = "Hugo",
-            Content = "Salut comment tu va ?",
-            TimeStamp = DateTime.Now,
-        },
-                new Components.Shared.ConversationMessages.MessageModel {
-            Sender = "You",
-            Content = "Salut comment tu va ?",
-            TimeStamp = DateTime.Now,
-        },
-    };
-
-
-    private List<Conversation> FictitiousConversations = new List<Conversation>
-    {
-        new Conversation
-        {
-            Id = "1",
-            LastMessage = "Salut, comment ça va ?",
-            LastUpdated = DateTime.Now.AddMinutes(-10),
-            Participants = new List<Participant>
-            {
-                new Participant { Firstname = "John", Name = "Doe", Username = "johndoe" },
-                new Participant { Firstname = "Jane", Name = "Smith", Username = "janesmith" }
-            }
-        },
-        new Conversation
-        {
-            Id = "2",
-            LastMessage = "On se retrouve demain à 18h.",
-            LastUpdated = DateTime.Now.AddHours(-1),
-            Participants = new List<Participant>
-            {
-                new Participant { Firstname = "Alice", Name = "Johnson", Username = "alicejohnson" },
-                new Participant { Firstname = "Bob", Name = "Brown", Username = "bobbrown" }
-            }
-        },
-        new Conversation
-        {
-            Id = "3",
-            LastMessage = "Tu m'as envoyé le fichier ?",
-            LastUpdated = DateTime.Now.AddMinutes(-30),
-            Participants = new List<Participant>
-            {
-                new Participant { Firstname = "Charlie", Name = "Davis", Username = "charliedavis" },
-                new Participant { Firstname = "Eva", Name = "Wilson", Username = "evawilson" }
-            }
-        }
-    };
-
-    protected override async Task OnInitializedAsync() {
-        if(UserSession.IsAuthenticated) {
             Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
             Snackbar.Add("Vous êtes connecté en tant que " + UserSession.UserName, Severity.Info);
         }
-        else {
+        else
+        {
             NavigationManager.NavigateTo("/login");
         }
+    }
+
+    // Cette méthode est appelée lorsque l'utilisateur clique sur un contact
+    private void HandleContactSelected(string recipientName)
+    {
+        RecipientName = recipientName;
     }
 }
 
