@@ -46,6 +46,10 @@ namespace TP_Messagerie.Components.Pages.Auth
             bool result = await AuthService.RegisterAsync(user);
             if(result)
             {
+                UserSession.UserId = user.Id;
+                UserSession.UserName = user.Username;
+                UserSession.Email = user.Email;
+                UserSession.IsAuthenticated = true;
                 NavigationManager.NavigateTo("/");
             }
             else

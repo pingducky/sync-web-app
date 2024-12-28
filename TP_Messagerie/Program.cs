@@ -3,8 +3,12 @@ using MongoDB.Driver;
 using TP_Messagerie.Components;
 using MudBlazor.Services;
 using TP_Messagerie.Services;
+using TP_Messagerie.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Ajouter le service UserSession
+builder.Services.AddScoped<UserSession>();
 
 // Cassandra configuration
 builder.Services.AddSingleton<Cassandra.ISession>(sp =>

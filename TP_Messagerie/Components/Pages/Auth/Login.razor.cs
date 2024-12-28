@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using TP_Messagerie.Data;
 using TP_Messagerie.Services;
 
 namespace TP_Messagerie.Components.Pages.Auth
@@ -27,6 +28,10 @@ namespace TP_Messagerie.Components.Pages.Auth
             var user = await AuthService.LoginAsync(Credentials.Username, Credentials.Password);
             if (user != null)
             {
+                UserSession.UserId = user.Id;
+                UserSession.UserName = user.Username;
+                UserSession.Email = user.Email;
+                UserSession.IsAuthenticated = true;
                 NavigationManager.NavigateTo("/");
             }
             else

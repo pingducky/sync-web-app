@@ -1,5 +1,8 @@
 ﻿@page "/"
 @using MudBlazor
+@inject UserSession UserSession
+@inject ISnackbar Snackbar
+@inject NavigationManager NavigationManager
 
 <PageTitle>Home</PageTitle>
 
@@ -90,6 +93,16 @@
             }
         }
     };
+
+    protected override async Task OnInitializedAsync() {
+        if(UserSession.IsAuthenticated) {
+            Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
+            Snackbar.Add("Vous êtes connecté en tant que " + UserSession.UserName, Severity.Info);
+        }
+        else {
+            NavigationManager.NavigateTo("/login");
+        }
+    }
 }
 
 <style>
