@@ -16,7 +16,6 @@ namespace TP_Messagerie.Services
 
         public async Task<List<Conversation>> GetConversationsForCurrentUserAsync()
         {
-            // Recherche des conversations où le tableau participants contient le UserName
             return await _conversations
                 .Find(c => c.Participants.Contains(_userSession.UserName))
                 .ToListAsync();

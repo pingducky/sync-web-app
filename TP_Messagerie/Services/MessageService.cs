@@ -18,8 +18,13 @@ namespace TP_Messagerie.Services
         public async Task DeleteMessageAsync(string messageId) =>
             await _messages.DeleteOneAsync(m => m.Id == messageId);
 
-        //public async Task<IEnumerable<MessageCollection>> GetMessagesBetweenUsersAsync(string senderId, string receiverId) =>
-        //    await _messages.Find(m => m.SenderId == senderId && m.ReceiverId == receiverId).ToListAsync();
+        public async Task<List<MessageCollection>> GetMessagesBetweenUsersAsync(string loginUsernameSession, string contactUsername)
+        {
+            return await _messages.Find(m =>
+                (m.Sender == loginUsernameSession && m.Receiver == contactUsername) ||
+                (m.Sender == contactUsername && m.Receiver == loginUsernameSession)
+            ).ToListAsync();
+        }
 
         public async Task<MessageCollection> GetMessageByIdAsync(string messageId) =>
             await _messages.Find(m => m.Id == messageId).FirstOrDefaultAsync();

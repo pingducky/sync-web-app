@@ -8,13 +8,14 @@
 <p> Receiver : @RecipientName</p>
 <MudContainer Class="chat-container">
     <MudItem xs="12" Class="message-box">
-        @* @foreach (var message in Messages) *@
-        @* { *@
-        @*     <Message Sender="@message.Sender" *@
-        @*     Content="@message.Content" *@
-        @*     TimeStamp="@message.TimeStamp" *@
-        @*     IsSentByCurrentUser="@(message.Sender == UserSession.UserName)" /> *@
-        @* } *@
+        @foreach (var message in Messages.OrderBy(m => m.SentAt))
+        {
+            <Message Content="@message.Content"
+                     TimeStamp="@message.SentAt"
+                     IsSentByCurrentUser="@(UserSession.UserName == message.Sender)"
+                     Sender="@message.Sender" />
+        }
+
     </MudItem>
 
     <MudContainer Class="input-container">
@@ -26,37 +27,50 @@
 @code {
     [Parameter]
     public required string ConversationName { get; set; }
+
+    private List<MessageCollection> _messages = new();
+    public List<MessageCollection> Messages
+    {
+        get => _messages;
+        set => _messages = value;
+    }
+
+    private string _recipientName = string.Empty;
     [Parameter]
-    public required List<MessageCollection> Messages { get; set; }
-    [Parameter]
-    public required string RecipientName { get; set; }
+    public string RecipientName
+    {
+        get => _recipientName;
+        set
+        {
+            if (_recipientName != value)
+            {
+                _recipientName = value;
+                LoadMessages(); // Appelle la fonction de récupération des messages
+            }
+        }
+    }
 
     private string newMessageContent = string.Empty;
+
+    private async void LoadMessages()
+    {
+        // Logique pour récupérer les messages liés à RecipientName
+        if (!string.IsNullOrEmpty(RecipientName))
+        {
+            Messages = await MessageService.GetMessagesBetweenUsersAsync(UserSession.UserName, RecipientName);
+            StateHasChanged(); // Met à jour l'interface utilisateur
+        }
+    }
 
     private void SendMessage()
     {
         if (!string.IsNullOrEmpty(newMessageContent))
         {
-            // MessageCollection newMessage = new MessageCollection
-            //     {
-            //         Sender = UserSession.UserName,
-            //         Receiver =
-            //     };
-
-            // Messages.Add(newMessage);
-            // MessageService.SendMessageAsync();
+            // Logique pour envoyer un message
             newMessageContent = string.Empty;
         }
     }
-
-    // public class MessageModel
-    // {
-    //     public required string Sender { get; set; }
-    //     public required string Content { get; set; }
-    //     public DateTime TimeStamp { get; set; }
-    // }
 }
-
 <style>
     .chat-container {
         display: flex;

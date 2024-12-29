@@ -13,14 +13,13 @@
     </MudItem>
     <MudItem xs="12" sm="8" Class="message-display-container">
         <MudPaper Elevation="4" Class="message-paper">
-            <ConversationMessages ConversationName="test" RecipientName="@RecipientName" Messages="@Messages" />
+            <ConversationMessages ConversationName="test" RecipientName="@RecipientName" />
         </MudPaper>
     </MudItem>
 </MudContainer>
 
 
 @code {
-    private List<MessageCollection> Messages = new List<MessageCollection>();
     private string RecipientName { get; set; } = string.Empty;
 
     protected override async Task OnInitializedAsync()
