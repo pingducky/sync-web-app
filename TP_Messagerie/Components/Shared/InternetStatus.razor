@@ -1,0 +1,69 @@
+﻿@using MudBlazor
+
+<MudIconButton Icon="@icon" Class="@ConnectionClass" Size="Size.Large" />
+
+@code {
+    private string icon = Icons.Material.Filled.WifiOff;
+    private string ConnectionClass => $"connection-status {(icon == Icons.Material.Filled.Wifi ? "connected" : "disconnected")}";
+    private System.Timers.Timer pingTimer;
+    private readonly string testUrl = "https://www.google.com";
+
+    protected override void OnInitialized()
+    {
+        // Configure a timer to check the connection periodically
+        pingTimer = new System.Timers.Timer(500);
+        pingTimer.Elapsed += async (_, __) => await CheckConnection();
+        pingTimer.AutoReset = true;
+        pingTimer.Start();
+    }
+
+    private async Task CheckConnection()
+    {
+        try
+        {
+            using var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync(testUrl);
+            if (response.IsSuccessStatusCode)
+            {
+                icon = Icons.Material.Filled.Wifi;
+            }
+            else
+            {
+                icon = Icons.Material.Filled.WifiOff;
+            }
+        }
+        catch
+        {
+            icon = Icons.Material.Filled.WifiOff;
+        }
+
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        pingTimer?.Stop();
+        pingTimer?.Dispose();
+    }
+}
+
+<style>
+    .connection-status {
+        position: absolute;
+        bottom: 16px;
+        right: 16px;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s, box-shadow 0.3s;
+    }
+
+        .connection-status.connected {
+            background-color: #4caf50;
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.5); 
+        }
+
+        .connection-status.disconnected {
+            background-color: #f44336;
+            box-shadow: 0 4px 8px rgba(244, 67, 54, 0.5);
+        }
+</style>
