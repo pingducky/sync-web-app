@@ -5,27 +5,27 @@
 @inject MessageService MessageService
 @inject UserSession UserSession
 
-    <p> Receiver : @RecipientName</p>
-    @if (!string.IsNullOrEmpty(RecipientName))
-    {
-        <MudContainer Class="chat-container">
-            <MudItem xs="12" Class="message-box">
-                @foreach (var message in Messages.OrderBy(m => m.SentAt))
-                {
-                    <Message Content="@message.Content"
-                             TimeStamp="@message.SentAt"
-                             IsSentByCurrentUser="@(UserSession.UserName == message.Sender)"
-                             Sender="@message.Sender" />
-                }
+<p> Receiver : @RecipientName</p>
+@if (!string.IsNullOrEmpty(RecipientName))
+{
+    <MudContainer Class="chat-container">
+        <MudItem xs="12" Class="message-box">
+            @foreach (var message in Messages.OrderBy(m => m.SentAt))
+            {
+                <Message Content="@message.Content"
+                TimeStamp="@message.SentAt"
+                IsSentByCurrentUser="@(UserSession.UserName == message.Sender)"
+                Sender="@message.Sender" />
+            }
 
-            </MudItem>
+        </MudItem>
 
-            <MudContainer Class="input-container">
-                <MudTextField @bind-Value="newMessageContent" Label="Type a message" FullWidth="true" />
-                <MudButton OnClick="SendMessage" Color="Color.Primary" FullWidth="true">Send</MudButton>
-            </MudContainer>
+        <MudContainer Class="input-container">
+            <MudTextField @bind-Value="newMessageContent" Label="Type a message" FullWidth="true" />
+            <MudButton OnClick="SendMessage" Color="Color.Primary" FullWidth="true">Send</MudButton>
         </MudContainer>
-    }
+    </MudContainer>
+}
 
 
 @code {
@@ -62,15 +62,22 @@
         if (!string.IsNullOrEmpty(RecipientName))
         {
             Messages = await MessageService.GetMessagesBetweenUsersAsync(UserSession.UserName, RecipientName);
-            StateHasChanged(); // Met à jour l'interface utilisateur
+            StateHasChanged(); 
         }
     }
 
-    private void SendMessage()
+    private async void SendMessage()
     {
         if (!string.IsNullOrEmpty(newMessageContent))
         {
-            // Logique pour envoyer un message
+            MessageCollection message = new MessageCollection();
+            message.Sender = UserSession.UserName;
+            message.Receiver = RecipientName;
+            message.Content = newMessageContent;
+            message.SentAt = DateTime.Now;
+
+            await MessageService.SendMessageAsync(message);
+            LoadMessages();
             newMessageContent = string.Empty;
         }
     }
