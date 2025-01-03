@@ -11,7 +11,7 @@
     protected override void OnInitialized()
     {
         // Configure a timer to check the connection periodically
-        pingTimer = new System.Timers.Timer(500);
+        pingTimer = new System.Timers.Timer(100);
         pingTimer.Elapsed += async (_, __) => await CheckConnection();
         pingTimer.AutoReset = true;
         pingTimer.Start();
