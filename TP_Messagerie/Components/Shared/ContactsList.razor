@@ -14,10 +14,10 @@
                 @if (UserSession.UserName != user.Username)
                 {
                     <Contact FirstName="@user.Firstname"
-                             LastName="@user.Name"
-                             RecipientName="@user.Username"
-                             PreviewText="@getMatchedConversation(user.Username)"
-                             OnClick="() => HandleContactClick(user.Username)" />
+                    LastName="@user.Name"
+                    RecipientName="@user.Username"
+                    PreviewText="@getMatchedConversation(user.Username)"
+                    OnClick="() => HandleContactClick(user.Username)" />
                 }
             }
         }
@@ -30,15 +30,14 @@
 
 @code {
     private List<User> contacts { get; set; } = new List<User>();
-    private List<Conversation> conversations { get; set; } = new List<Conversation>();
-
+    [Parameter]
+    public List<Conversation> conversations { get; set; } = new();
     [Parameter]
     public EventCallback<string> OnContactSelected { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         contacts = await UserService.GetAllUsersAsync();
-        conversations = await ConversationService.GetConversationsForCurrentUserAsync();
     }
 
     private string getMatchedConversation(string username)
@@ -50,7 +49,6 @@
         return conversation?.LastMessage ?? string.Empty; // Dernier message ou chaîne vide
     }
 
-    // Cette méthode est appelée lors du clic sur un contact
     private async Task HandleContactClick(string recipientName)
     {
         await OnContactSelected.InvokeAsync(recipientName);

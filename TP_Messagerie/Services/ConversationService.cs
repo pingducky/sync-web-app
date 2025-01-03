@@ -24,20 +24,39 @@ namespace TP_Messagerie.Services
         public async Task UpdateLastMessageAsync(string lastMessage, string recipient)
         {
             // Les participants sont l'utilisateur actuel et le destinataire
-            var participants = new[] { _userSession.UserName, recipient };
+            var participants = new List<string> { _userSession.UserName, recipient };
+
 
             // Construction du filtre pour vérifier si tous les participants sont présents
             var filter = Builders<Conversation>.Filter.All("participants", participants);
 
-            // Définition des champs à mettre à jour
-            var updateDefinition = Builders<Conversation>.Update
-                .Set("lastMessage", lastMessage)
-                .Set("lastUserMessage", _userSession.UserName)
-                .Set("lastUpdated", DateTime.UtcNow)
-                .SetOnInsert("participants", participants);
+            // Vérifiez si une conversation existe déjà
+            var existingConversation = await _conversations.Find(filter).FirstOrDefaultAsync();
 
-            // Effectue un upsert (mise à jour ou insertion)
-            await _conversations.UpdateOneAsync(filter, updateDefinition, new UpdateOptions { IsUpsert = true });
+            if (existingConversation != null)
+            {
+                // Mise à jour des champs pour une conversation existante
+                var updateDefinition = Builders<Conversation>.Update
+                    .Set("lastMessage", lastMessage)
+                    .Set("lastUserMessage", _userSession.UserName)
+                    .Set("lastUpdated", DateTime.UtcNow);
+
+                await _conversations.UpdateOneAsync(filter, updateDefinition);
+            }
+            else
+            {
+                // Création d'un nouveau document si la conversation n'existe pas
+                var newConversation = new Conversation
+                {
+                    Participants = participants,
+                    LastMessage = lastMessage,
+                    LastUserMessage = _userSession.UserName,
+                    LastUpdated = DateTime.UtcNow
+                };
+
+                await _conversations.InsertOneAsync(newConversation);
+            }
+
         }
     }
 }

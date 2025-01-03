@@ -1,26 +1,30 @@
 ﻿@page "/"
 @using MudBlazor
+@using TP_Messagerie.Services
 @inject UserSession UserSession
 @inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
+@inject ConversationService ConversationService
 
 <PageTitle>Home</PageTitle>
 
 <MudContainer Class="messagerie-container pa-0">
-
     <MudItem xs="12" sm="4" Class="contacts-list-container">
-        <ContactsList OnContactSelected="HandleContactSelected" />
+        <ContactsList OnContactSelected="HandleContactSelected" conversations="conversations" />
     </MudItem>
     <MudItem xs="12" sm="8" Class="message-display-container">
         <MudPaper Elevation="4" Class="message-paper">
-            <ConversationMessages ConversationName="test" RecipientName="@RecipientName" />
+            <ConversationMessages ConversationName="test"
+                                  RecipientName="@RecipientName"
+                                  OnReloadConversations="ReloadConversation" />
         </MudPaper>
     </MudItem>
 </MudContainer>
-<InternetStatus/>
+<InternetStatus />
 
 @code {
     private string RecipientName { get; set; } = string.Empty;
+    private List<Conversation> conversations { get; set; } = new List<Conversation>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -33,13 +37,21 @@
         {
             NavigationManager.NavigateTo("/login");
         }
+        // conversations = await ConversationService.GetConversationsForCurrentUserAsync();
     }
 
-    // Cette méthode est appelée lorsque l'utilisateur clique sur un contact
     private void HandleContactSelected(string recipientName)
     {
         RecipientName = recipientName;
     }
+
+    private async void ReloadConversation()
+    {
+        Console.WriteLine("ReloadConversation has been called."); // Ajout du message de debug
+        conversations = await ConversationService.GetConversationsForCurrentUserAsync();
+        StateHasChanged();
+    }
+
 }
 
 <style>

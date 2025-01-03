@@ -4,6 +4,7 @@
 
 @inject MessageService MessageService
 @inject UserSession UserSession
+@inject ConversationService ConversationService
 
 <p> Receiver : @RecipientName</p>
 @if (!string.IsNullOrEmpty(RecipientName))
@@ -17,7 +18,6 @@
                 IsSentByCurrentUser="@(UserSession.UserName == message.Sender)"
                 Sender="@message.Sender" />
             }
-
         </MudItem>
 
         <MudContainer Class="input-container">
@@ -26,7 +26,6 @@
         </MudContainer>
     </MudContainer>
 }
-
 
 @code {
     [Parameter]
@@ -49,20 +48,22 @@
             if (_recipientName != value)
             {
                 _recipientName = value;
-                LoadMessages(); // Appelle la fonction de récupération des messages
+                LoadMessages();
             }
         }
     }
+
+    [Parameter]
+    public EventCallback OnReloadConversations { get; set; } // Nouveau paramètre
 
     private string newMessageContent = string.Empty;
 
     private async void LoadMessages()
     {
-        // Logique pour récupérer les messages liés à RecipientName
         if (!string.IsNullOrEmpty(RecipientName))
         {
             Messages = await MessageService.GetMessagesBetweenUsersAsync(UserSession.UserName, RecipientName);
-            StateHasChanged(); 
+            StateHasChanged();
         }
     }
 
@@ -70,18 +71,27 @@
     {
         if (!string.IsNullOrEmpty(newMessageContent))
         {
-            MessageCollection message = new MessageCollection();
-            message.Sender = UserSession.UserName;
-            message.Receiver = RecipientName;
-            message.Content = newMessageContent;
-            message.SentAt = DateTime.Now;
+            var message = new MessageCollection
+                {
+                    Sender = UserSession.UserName,
+                    Receiver = RecipientName,
+                    Content = newMessageContent,
+                    SentAt = DateTime.Now
+                };
 
             await MessageService.SendMessageAsync(message);
-            LoadMessages();
+            await ConversationService.UpdateLastMessageAsync(newMessageContent, RecipientName);
+            await OnReloadConversations.InvokeAsync(); // Appel de la méthode de rafraîchissement
             newMessageContent = string.Empty;
+            LoadMessages();
         }
     }
+
+    protected override async Task OnInitializedAsync() {
+        await OnReloadConversations.InvokeAsync();
+    }
 }
+
 <style>
     .chat-container {
         display: flex;

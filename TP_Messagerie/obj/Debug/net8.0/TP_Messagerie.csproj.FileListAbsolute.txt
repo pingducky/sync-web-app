@@ -50,7 +50,6 @@ C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\staticweb
 C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.TP_Messagerie.props
 C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.TP_Messagerie.props
 C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\staticwebassets.pack.json
-C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\TP_Messa.4D062A0F.Up2Date
 C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\TP_Messagerie.dll
 C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\refint\TP_Messagerie.dll
@@ -58,3 +57,4 @@ C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\TP_Messag
 C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\TP_Messagerie.genruntimeconfig.cache
 C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\ref\TP_Messagerie.dll
 C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\scopedcss\Components\Shared\Contact.razor.rz.scp.css
+C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
