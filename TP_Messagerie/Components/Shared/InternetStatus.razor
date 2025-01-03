@@ -3,20 +3,24 @@
 <MudIconButton Icon="@icon" Class="@ConnectionClass" Size="Size.Large" />
 
 @code {
+    #region Variables locales
     private string icon = Icons.Material.Filled.WifiOff;
     private string ConnectionClass => $"connection-status {(icon == Icons.Material.Filled.Wifi ? "connected" : "disconnected")}";
     private System.Timers.Timer pingTimer;
     private readonly string testUrl = "https://www.google.com";
+    #endregion
 
+    #region Evènements
     protected override void OnInitialized()
     {
-        // Configure a timer to check the connection periodically
         pingTimer = new System.Timers.Timer(100);
         pingTimer.Elapsed += async (_, __) => await CheckConnection();
         pingTimer.AutoReset = true;
         pingTimer.Start();
     }
+    #endregion
 
+    #region Méthodes & Fonctions
     private async Task CheckConnection()
     {
         try
@@ -45,6 +49,7 @@
         pingTimer?.Stop();
         pingTimer?.Dispose();
     }
+    #endregion
 }
 
 <style>
@@ -57,13 +62,13 @@
         transition: background-color 0.3s, box-shadow 0.3s;
     }
 
-        .connection-status.connected {
-            background-color: #4caf50;
-            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.5); 
-        }
+    .connection-status.connected {
+        background-color: #4caf50;
+        box-shadow: 0 4px 8px rgba(76, 175, 80, 0.5); 
+    }
 
-        .connection-status.disconnected {
-            background-color: #f44336;
-            box-shadow: 0 4px 8px rgba(244, 67, 54, 0.5);
-        }
+    .connection-status.disconnected {
+        background-color: #f44336;
+        box-shadow: 0 4px 8px rgba(244, 67, 54, 0.5);
+    }
 </style>

@@ -51,7 +51,7 @@
     public EventCallback OnClick { get; set; }
 
     [Parameter]
-    public bool IsSelected { get; set; } // Propriété indiquant si ce contact est sélectionné
+    public bool IsSelected { get; set; }
 
     private string Initials => string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName)
         ? string.Empty
@@ -67,7 +67,7 @@
 
     private string GetCardStyle()
     {
-        return IsSelected ? "background-color: #e0e0e0;" : string.Empty; // Applique un fond gris clair si sélectionné
+        return IsSelected ? "background-color: #e0e0e0;" : string.Empty;
     }
 }
 

@@ -7,7 +7,7 @@ namespace TP_Messagerie.Components.Pages.Auth
     public partial class Login
     {
 
-        #region Parameters
+        #region Paramètres
 
         public class Credential { public string Username { get; set; } = ""; public string Password { get; set; } = ""; }
         private Credential Credentials { get; } = new Credential();
@@ -16,12 +16,8 @@ namespace TP_Messagerie.Components.Pages.Auth
 
         #endregion
 
+        #region Méthodes
 
-        #region Methods
-
-        /// <summary>
-        /// Méthode de validation du formulaire de connexion.
-        /// </summary>
         private async void OnValidSubmit()
         {
             Loading = true;

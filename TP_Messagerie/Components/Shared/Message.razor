@@ -7,6 +7,7 @@
 </MudContainer>
 
 @code {
+    #region Paramètres
     [Parameter]
     public required string Sender { get; set; }
     [Parameter]
@@ -14,7 +15,8 @@
     [Parameter]
     public DateTime TimeStamp { get; set; }
     [Parameter]
-    public required bool IsSentByCurrentUser { get; set; }  // Todo: ternaire align item ou autre
+    public required bool IsSentByCurrentUser { get; set; }
+    #endregion
 }
 
 <style>

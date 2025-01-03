@@ -27,17 +27,10 @@
 }
 
 @code {
+    #region Paramètres
     [Parameter]
     public required string ConversationName { get; set; }
 
-    private List<MessageCollection> _messages = new();
-    public List<MessageCollection> Messages
-    {
-        get => _messages;
-        set => _messages = value;
-    }
-
-    private string _recipientName = string.Empty;
     [Parameter]
     public string RecipientName
     {
@@ -53,10 +46,23 @@
     }
 
     [Parameter]
-    public EventCallback OnReloadConversations { get; set; } // Nouveau paramètre
+    public EventCallback OnReloadConversations { get; set; }
+    #endregion
+
+    #region Variables locales
+    private List<MessageCollection> _messages = new();
+    public List<MessageCollection> Messages
+    {
+        get => _messages;
+        set => _messages = value;
+    }
+
+    private string _recipientName = string.Empty;
 
     private string newMessageContent = string.Empty;
+    #endregion
 
+    #region Méthodes & fonctions
     private async void LoadMessages()
     {
         if (!string.IsNullOrEmpty(RecipientName))
@@ -85,10 +91,14 @@
             LoadMessages();
         }
     }
+    #endregion
 
+    #region Evènement
     protected override async Task OnInitializedAsync() {
         await OnReloadConversations.InvokeAsync();
     }
+    #endregion
+
 }
 
 <style>
@@ -104,7 +114,7 @@
         padding: 10px;
         display: flex;
         flex-direction: column;
-        max-height: calc(100vh - 140px); /* Limite la hauteur des messages pour qu'ils ne dépassent pas l'écran */
+        max-height: calc(100vh - 140px);
     }
 
     .input-container {
@@ -112,7 +122,7 @@
         flex-direction: column;
         padding: 10px;
         border-top: 1px solid #ddd;
-        max-height: 140px; /* Limite la hauteur du champ de saisie et du bouton */
+        max-height: 140px;
     }
 
     .mud-text-field {

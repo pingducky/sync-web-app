@@ -8,7 +8,7 @@ namespace TP_Messagerie.Components.Pages.Auth
 {
     public partial class Register
     {
-        #region Parameters
+        #region Paramètres
 
         public class Credential {
             public string Username { get; set; } = "";
@@ -23,12 +23,7 @@ namespace TP_Messagerie.Components.Pages.Auth
 
         #endregion
 
-
-        #region Methods
-
-        /// <summary>
-        /// Méthode de validation du formulaire d'inscription.
-        /// </summary>
+        #region Méthodes
         private async void OnValidSubmit()
         {
             var test = await UserService.GetAllUsersAsync();
@@ -59,7 +54,6 @@ namespace TP_Messagerie.Components.Pages.Auth
             }
 
         }
-
         #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿@using TP_Messagerie.Data
 @using MudBlazor
 @using TP_Messagerie.Services
+
 @inject UserService UserService
 @inject ConversationService ConversationService
 @inject UserSession UserSession
@@ -31,18 +32,28 @@
 
 @code {
     private List<User> contacts { get; set; } = new List<User>();
-    private string selectedContact { get; set; } = string.Empty; // Ajout d'un état pour le contact sélectionné
+    private string selectedContact { get; set; } = string.Empty;
 
     [Parameter]
     public List<Conversation> conversations { get; set; } = new();
+
     [Parameter]
     public EventCallback<string> OnContactSelected { get; set; }
 
+    #region Evènements
     protected override async Task OnInitializedAsync()
     {
         contacts = await UserService.GetAllUsersAsync();
     }
 
+    private async Task HandleContactClick(string recipientName)
+    {
+        selectedContact = recipientName;
+        await OnContactSelected.InvokeAsync(recipientName);
+    }
+    #endregion
+
+    #region Fonctions
     private string getMatchedConversation(string username)
     {
         var conversation = conversations.FirstOrDefault(convo =>
@@ -51,14 +62,8 @@
 
         return conversation?.LastMessage ?? string.Empty; // Dernier message ou chaîne vide
     }
-
-    private async Task HandleContactClick(string recipientName)
-    {
-        selectedContact = recipientName; // Mettez à jour le contact sélectionné
-        await OnContactSelected.InvokeAsync(recipientName);
-    }
+    #endregion
 }
-
 
 <style>
     .contacts-list-paper {
