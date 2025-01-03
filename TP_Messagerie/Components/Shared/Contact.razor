@@ -3,7 +3,7 @@
 @inject UserSession UserSession
 
 <MudCard @onclick="UpdateReceiver" Class="mud-card">
-    <MudPaper Elevation="2" Class="ma-2">
+    <MudPaper Elevation="2" Class="ma-2" Style="@GetCardStyle()">
         <MudContainer Class="contact-preview">
             <MudAvatar Size="Size.Large" Color="Color.Primary">
                 @Initials
@@ -50,6 +50,9 @@
     [Parameter]
     public EventCallback OnClick { get; set; }
 
+    [Parameter]
+    public bool IsSelected { get; set; } // Propriété indiquant si ce contact est sélectionné
+
     private string Initials => string.IsNullOrWhiteSpace(FirstName) || string.IsNullOrWhiteSpace(LastName)
         ? string.Empty
         : $"{FirstName[0]}{LastName[0]}".ToUpper();
@@ -60,6 +63,11 @@
         {
             await OnClick.InvokeAsync(RecipientName);  // Transmettre le RecipientName au parent
         }
+    }
+
+    private string GetCardStyle()
+    {
+        return IsSelected ? "background-color: #e0e0e0;" : string.Empty; // Applique un fond gris clair si sélectionné
     }
 }
 

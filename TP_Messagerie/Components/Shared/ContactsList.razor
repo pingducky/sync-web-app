@@ -14,10 +14,11 @@
                 @if (UserSession.UserName != user.Username)
                 {
                     <Contact FirstName="@user.Firstname"
-                    LastName="@user.Name"
-                    RecipientName="@user.Username"
-                    PreviewText="@getMatchedConversation(user.Username)"
-                    OnClick="() => HandleContactClick(user.Username)" />
+                             LastName="@user.Name"
+                             RecipientName="@user.Username"
+                             PreviewText="@getMatchedConversation(user.Username)"
+                             IsSelected="@(selectedContact == user.Username)"
+                             OnClick="() => HandleContactClick(user.Username)" />
                 }
             }
         }
@@ -30,6 +31,8 @@
 
 @code {
     private List<User> contacts { get; set; } = new List<User>();
+    private string selectedContact { get; set; } = string.Empty; // Ajout d'un état pour le contact sélectionné
+
     [Parameter]
     public List<Conversation> conversations { get; set; } = new();
     [Parameter]
@@ -51,6 +54,7 @@
 
     private async Task HandleContactClick(string recipientName)
     {
+        selectedContact = recipientName; // Mettez à jour le contact sélectionné
         await OnContactSelected.InvokeAsync(recipientName);
     }
 }
