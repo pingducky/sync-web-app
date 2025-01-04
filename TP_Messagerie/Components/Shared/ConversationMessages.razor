@@ -121,6 +121,7 @@
                 await ConversationService.UpdateLastMessageAsync(newMessageContent, RecipientName);
                 await OnReloadConversations.InvokeAsync();
                 LoadMessages();
+                newMessageContent = string.Empty;
             }
             else
             {
@@ -130,6 +131,16 @@
                 newMessageContent = string.Empty;
                 await LocalStorage.SetItemAsync("savedUnsentMessages", savedUnsentMessages);
                 UnsentMessages = savedUnsentMessages;
+
+                if (UnsentMessages != null && UnsentMessages.Count > 0)
+                {
+                    foreach (var unsentMessage in UnsentMessages)
+                    {
+                        // Assurez-vous que le statut est `false` pour les messages non envoyés
+                        unsentMessage.IsSent = false;
+                    }
+                    Messages.AddRange(UnsentMessages); // Ajouter les messages non envoyés à la liste des messages
+                }
             }
         }
     }

@@ -17,14 +17,16 @@
     [Parameter]
     public required bool IsSentByCurrentUser { get; set; }
     [Parameter]
-    public bool IsSent { get; set; } = true; // Par défaut, le message est envoyé
+    public bool IsSent { get; set; } = true;
     #endregion
 
     private string GetMessageClass()
     {
-        if (!IsSent)
-            return "unsent";
-        return IsSentByCurrentUser ? "received" : "sent";
+        string classes = IsSentByCurrentUser? "received" : "sent";
+        if (!IsSent) {
+            classes = classes + " unsent";
+        }
+        return classes;
     }
 }
 
@@ -59,11 +61,8 @@
         width: fit-content;
         padding: 8px;
         border-radius: 10px;
-        color: gray; /* Texte en gris */
-        background-color: #f0f0f0; /* Fond légèrement gris */
-        margin-left: auto;
-        margin-right: 0;
-        text-align: right;
+        color: gray;
+        background-color: #f0f0f0;
         word-wrap: break-word;
     }
 </style>
