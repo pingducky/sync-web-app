@@ -4,14 +4,14 @@ using TP_Messagerie.Components;
 using MudBlazor.Services;
 using TP_Messagerie.Services;
 using TP_Messagerie.Data;
+using Blazored.LocalStorage;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Ajouter le service UserSession
 builder.Services.AddScoped<UserSession>();
-
-
 builder.Services.AddScoped<ConversationService>();
+
+builder.Services.AddBlazoredLocalStorage();
 
 // Cassandra configuration
 builder.Services.AddSingleton<Cassandra.ISession>(sp =>

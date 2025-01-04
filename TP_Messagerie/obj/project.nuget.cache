@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "JIvrM3YKr6c=",
+  "dgSpecHash": "ERZ3kqc2Xzw=",
   "success": true,
   "projectFilePath": "C:\\PRIVE\\Cours\\Persistence\\sync-web-app\\TP_Messagerie\\TP_Messagerie.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\hugo1\\.nuget\\packages\\blazored.localstorage\\4.5.0\\blazored.localstorage.4.5.0.nupkg.sha512",
     "C:\\Users\\hugo1\\.nuget\\packages\\cassandracsharpdriver\\3.22.0\\cassandracsharpdriver.3.22.0.nupkg.sha512",
     "C:\\Users\\hugo1\\.nuget\\packages\\dnsclient\\1.6.1\\dnsclient.1.6.1.nupkg.sha512",
     "C:\\Users\\hugo1\\.nuget\\packages\\k4os.compression.lz4\\1.1.11\\k4os.compression.lz4.1.1.11.nupkg.sha512",

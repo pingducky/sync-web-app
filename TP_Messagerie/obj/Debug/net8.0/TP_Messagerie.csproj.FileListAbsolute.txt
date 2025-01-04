@@ -58,3 +58,4 @@ C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\TP_Messag
 C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\ref\TP_Messagerie.dll
 C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\scopedcss\Components\Shared\Contact.razor.rz.scp.css
 C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\bin\Debug\net8.0\Blazored.LocalStorage.dll

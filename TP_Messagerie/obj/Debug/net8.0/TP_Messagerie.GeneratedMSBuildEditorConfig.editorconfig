@@ -59,6 +59,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcSW50ZXJuZXRTdGF0dXMucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/PRIVE/Cours/Persistence/sync-web-app/TP_Messagerie/Components/Shared/LocalStorageTesting.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcTG9jYWxTdG9yYWdlVGVzdGluZy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/PRIVE/Cours/Persistence/sync-web-app/TP_Messagerie/Components/Shared/Message.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xTaGFyZWRcTWVzc2FnZS5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 

@@ -1,0 +1,72 @@
+﻿@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+
+<h3>Messagerie</h3>
+
+<button @onclick="SaveMessage">Enregistrer le message</button>
+<button @onclick="LoadMessage">Charger le message</button>
+<button @onclick="DeleteMessage">Effacer la sauvegarde</button>
+
+@if (storedMessage != null)
+{
+    <div>
+        <h4>Message chargé :</h4>
+        <p><strong>Expéditeur :</strong> @storedMessage.Sender</p>
+        <p><strong>Destinataire :</strong> @storedMessage.Receiver</p>
+        <p><strong>Contenu :</strong> @storedMessage.Content</p>
+        <p><strong>Envoyé le :</strong> @storedMessage.SentAt</p>
+        @if (storedMessage.ReadAt != null)
+        {
+            <p><strong>Lu le :</strong> @storedMessage.ReadAt</p>
+        }
+    </div>
+}
+else
+{
+    <p>Aucun message chargé.</p>
+}
+
+@code {
+    private MessageCollection? storedMessage;
+
+    private async Task SaveMessage()
+    {
+        // Exemple de message
+        var message = new MessageCollection
+            {
+                Id = Guid.NewGuid().ToString(),
+                Sender = "John Doe",
+                Receiver = "Jane Smith",
+                Content = "Ceci est un test de message.",
+                SentAt = DateTime.Now,
+                ReadAt = null
+            };
+
+        // Enregistrer dans le local storage
+        await LocalStorage.SetItemAsync("savedMessage", message);
+    }
+
+    private async Task LoadMessage()
+    {
+        // Charger le message depuis le local storage
+        storedMessage = await LocalStorage.GetItemAsync<MessageCollection>("savedMessage");
+    }
+
+    private async Task DeleteMessage()
+    {
+        // Supprimer le message du local storage
+        await LocalStorage.RemoveItemAsync("savedMessage");
+
+        // Réinitialiser l'objet en mémoire
+        storedMessage = null;
+    }
+
+    public class MessageCollection
+    {
+        public string Id { get; set; } = null!;
+        public string Sender { get; set; } = null!;
+        public string Receiver { get; set; } = null!;
+        public string Content { get; set; } = null!;
+        public DateTime SentAt { get; set; }
+        public DateTime? ReadAt { get; set; }
+    }
+}

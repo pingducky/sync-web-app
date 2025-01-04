@@ -6,8 +6,9 @@
 @inject NavigationManager NavigationManager
 @inject ConversationService ConversationService
 
+<p>@isConnected</p>
 <PageTitle>Home</PageTitle>
-
+<LocalStorageTesting/>
 <MudContainer Class="messagerie-container pa-0">
     <MudItem xs="12" sm="4" Class="contacts-list-container">
         <ContactsList OnContactSelected="HandleContactSelected" conversations="conversations" />
@@ -15,16 +16,17 @@
     <MudItem xs="12" sm="8" Class="message-display-container">
         <MudPaper Elevation="4" Class="message-paper">
             <ConversationMessages ConversationName="test"
-                                  RecipientName="@RecipientName"
-                                  OnReloadConversations="ReloadConversation" />
+            RecipientName="@RecipientName"
+            OnReloadConversations="ReloadConversation" />
         </MudPaper>
     </MudItem>
 </MudContainer>
-<InternetStatus />
+<InternetStatus OnConnectionStatusChanged="HandleConnectionStatusChanged"/>
 
 @code {
     private string RecipientName { get; set; } = string.Empty;
     private List<Conversation> conversations { get; set; } = new List<Conversation>();
+    private bool isConnected { get; set; } = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -43,6 +45,11 @@
     private void HandleContactSelected(string recipientName)
     {
         RecipientName = recipientName;
+    }
+
+    private void HandleConnectionStatusChanged(bool isConnected)
+    {
+        this.isConnected = isConnected;
     }
 
     private async void ReloadConversation()

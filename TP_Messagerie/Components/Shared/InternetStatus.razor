@@ -8,6 +8,9 @@
     private string ConnectionClass => $"connection-status {(icon == Icons.Material.Filled.Wifi ? "connected" : "disconnected")}";
     private System.Timers.Timer pingTimer;
     private readonly string testUrl = "https://www.google.com";
+
+    [Parameter]
+    public EventCallback<bool> OnConnectionStatusChanged { get; set; } // Paramètre pour le parent
     #endregion
 
     #region Evènements
@@ -23,25 +26,30 @@
     #region Méthodes & Fonctions
     private async Task CheckConnection()
     {
+        bool isConnected;
         try
         {
             using var httpClient = new HttpClient();
             var response = await httpClient.GetAsync(testUrl);
-            if (response.IsSuccessStatusCode)
-            {
-                icon = Icons.Material.Filled.Wifi;
-            }
-            else
-            {
-                icon = Icons.Material.Filled.WifiOff;
-            }
+            isConnected = response.IsSuccessStatusCode;
+
+            icon = isConnected ? Icons.Material.Filled.Wifi : Icons.Material.Filled.WifiOff;
         }
         catch
         {
+            isConnected = false;
             icon = Icons.Material.Filled.WifiOff;
         }
 
-        await InvokeAsync(StateHasChanged);
+        // Ensure UI updates and callback invocation occur on the UI thread
+        await InvokeAsync(async () =>
+        {
+            // Update component state
+            StateHasChanged();
+
+            // Notify parent component
+            await OnConnectionStatusChanged.InvokeAsync(isConnected);
+        });
     }
 
     public void Dispose()
@@ -62,13 +70,13 @@
         transition: background-color 0.3s, box-shadow 0.3s;
     }
 
-    .connection-status.connected {
-        background-color: #4caf50;
-        box-shadow: 0 4px 8px rgba(76, 175, 80, 0.5); 
-    }
+        .connection-status.connected {
+            background-color: #4caf50;
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.5);
+        }
 
-    .connection-status.disconnected {
-        background-color: #f44336;
-        box-shadow: 0 4px 8px rgba(244, 67, 54, 0.5);
-    }
+        .connection-status.disconnected {
+            background-color: #f44336;
+            box-shadow: 0 4px 8px rgba(244, 67, 54, 0.5);
+        }
 </style>
