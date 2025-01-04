@@ -7,7 +7,6 @@
 @inject ConversationService ConversationService
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
-<p>@InternetStatus</p>
 @if (!string.IsNullOrEmpty(RecipientName))
 {
     <MudContainer Class="chat-container">
@@ -20,14 +19,6 @@
                 Sender="@message.Sender"
                 IsSent="@message.IsSent" />
             }
-            @* @foreach (var message in UnsentMessages.OrderBy(m => m.SentAt)) *@
-            @* { *@
-            @*     <Message Content="@message.Content" *@
-            @*              TimeStamp="@message.SentAt" *@
-            @*              IsSentByCurrentUser="@(UserSession.UserName == message.Sender)" *@
-            @*              Sender="@message.Sender" *@
-            @*              IsSent="false" /> *@
-            @* } *@
         </MudItem>
 
         <MudContainer Class="input-container">
@@ -51,7 +42,7 @@
             if (_recipientName != value)
             {
                 _recipientName = value;
-                LoadMessages();
+                _ = LoadMessagesAsync(); // Appel de la méthode pour charger les messages
             }
         }
     }
@@ -61,44 +52,27 @@
 
     [Parameter]
     public bool InternetStatus { get; set; } = false;
+    [Parameter]
+    public List<MessageCollection> Messages { get; set; }
     #endregion
 
     #region Variables locales
-    private List<MessageCollection> _messages = new();
-    public List<MessageCollection> Messages
-    {
-        get => _messages;
-        set => _messages = value;
-    }
+
 
     [Parameter]
     public List<MessageCollection> UnsentMessages { get; set; } = new();
+    [Parameter]
+    public EventCallback OnLoadMessages { get; set; }
+
 
     private string _recipientName = string.Empty;
     private string newMessageContent = string.Empty;
     #endregion
 
     #region Méthodes & fonctions
-    private async void LoadMessages()
+    private async Task LoadMessagesAsync()
     {
-        if (!string.IsNullOrEmpty(RecipientName))
-        {
-            // Charger les messages de la base de données pour la conversation
-            Messages = await MessageService.GetMessagesBetweenUsersAsync(UserSession.UserName, RecipientName);
-
-            // Ajouter les messages non envoyés à la liste des messages
-            if (UnsentMessages != null && UnsentMessages.Count > 0)
-            {
-                foreach (var unsentMessage in UnsentMessages)
-                {
-                    // Assurez-vous que le statut est `false` pour les messages non envoyés
-                    unsentMessage.IsSent = false;
-                }
-                Messages.AddRange(UnsentMessages); // Ajouter les messages non envoyés à la liste des messages
-            }
-
-            StateHasChanged();  // Mettre à jour l'UI
-        }
+        await OnLoadMessages.InvokeAsync();
     }
 
     private async void SendMessage()
@@ -120,7 +94,7 @@
                 await MessageService.SendMessageAsync(message);
                 await ConversationService.UpdateLastMessageAsync(newMessageContent, RecipientName);
                 await OnReloadConversations.InvokeAsync();
-                LoadMessages();
+                await OnLoadMessages.InvokeAsync();
                 newMessageContent = string.Empty;
             }
             else
@@ -151,6 +125,7 @@
     {
         // Charger les messages lors de l'initialisation
         await OnReloadConversations.InvokeAsync();
+        await OnLoadMessages.InvokeAsync();
     }
     #endregion
 }

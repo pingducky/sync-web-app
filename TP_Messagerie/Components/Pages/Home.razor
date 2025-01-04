@@ -8,9 +8,6 @@
 @inject MessageService MessageService
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
-
-<p>@isConnected</p>
-<p>savedUnsentMessages.Count : @savedUnsentMessages?.Count </p>
 <PageTitle>Home</PageTitle>
 <MudContainer Class="messagerie-container pa-0">
     <MudItem xs="12" sm="4" Class="contacts-list-container">
@@ -24,7 +21,8 @@
             OnReloadConversations="ReloadConversation"
             InternetStatus="isConnected"
             UnsentMessages="UnsentMessages"
-            />
+            Messages="Messages"
+            OnLoadMessages="LoadMessages" />
         </MudPaper>
     </MudItem>
 </MudContainer>
@@ -36,6 +34,8 @@
     private bool isConnected { get; set; } = false;
     public List<MessageCollection> UnsentMessages { get; set; } = new();
     private List<MessageCollection>? savedUnsentMessages;
+    private List<MessageCollection>? Messages = new List<MessageCollection>();
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -68,7 +68,7 @@
 
             if (isConnected)
             {
-                savedUnsentMessages = await LocalStorage.GetItemAsync<List<MessageCollection>>("savedUnsentMessages");
+                savedUnsentMessages = await LocalStorage.GetItemAsync<List<MessageCollection>>("savedUnsentMessages"); // Todo : fix bug
                 if (savedUnsentMessages != null && savedUnsentMessages.Count != 0)
                 {
                     // Envoi des messages non envoyés
@@ -77,6 +77,7 @@
                     // Supprime les messages stockés après envoi
                     await LocalStorage.RemoveItemAsync("savedUnsentMessages");
                     savedUnsentMessages = new List<MessageCollection>();
+                    LoadMessages();
                 }
             }
             else
@@ -88,6 +89,28 @@
         finally
         {
             isHandlingConnectionChange = false;
+        }
+    }
+
+    private async void LoadMessages()
+    {
+        if (!string.IsNullOrEmpty(RecipientName))
+        {
+            // Charger les messages de la base de données pour la conversation
+            Messages = await MessageService.GetMessagesBetweenUsersAsync(UserSession.UserName, RecipientName);
+
+            // Ajouter les messages non envoyés à la liste des messages
+            if (UnsentMessages != null && UnsentMessages.Count > 0)
+            {
+                foreach (var unsentMessage in UnsentMessages)
+                {
+                    // Assurez-vous que le statut est `false` pour les messages non envoyés
+                    unsentMessage.IsSent = false;
+                }
+                Messages.AddRange(UnsentMessages); // Ajouter les messages non envoyés à la liste des messages
+            }
+
+            StateHasChanged();  // Mettre à jour l'UI
         }
     }
 
