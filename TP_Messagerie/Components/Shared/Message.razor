@@ -1,6 +1,6 @@
 ﻿@using MudBlazor
 
-<MudContainer class="@(IsSentByCurrentUser ? "received" : "sent")">
+<MudContainer class="@GetMessageClass()">
     <MudText Typo="Typo.body1" Class="message-sender">@Sender</MudText>
     <MudText Typo="Typo.body2" Class="message-content">@Content</MudText>
     <MudText Typo="Typo.caption" Class="message-time">@TimeStamp.ToString("HH:mm")</MudText>
@@ -16,7 +16,16 @@
     public DateTime TimeStamp { get; set; }
     [Parameter]
     public required bool IsSentByCurrentUser { get; set; }
+    [Parameter]
+    public bool IsSent { get; set; } = true; // Par défaut, le message est envoyé
     #endregion
+
+    private string GetMessageClass()
+    {
+        if (!IsSent)
+            return "unsent";
+        return IsSentByCurrentUser ? "received" : "sent";
+    }
 }
 
 <style>
@@ -27,20 +36,34 @@
         padding: 8px;
         border-radius: 10px;
         color: white;
-        word-wrap: break-word; 
+        word-wrap: break-word;
     }
 
     .sent {
         background-color: lightgray;
         margin-left: auto;
-        margin-right: 0; 
-        text-align: right; 
+        margin-right: 0;
+        text-align: right;
     }
 
     .received {
         background-color: #2196F3;
-        margin-right: auto; 
+        margin-right: auto;
         margin-left: 0;
-        text-align: left; 
+        text-align: left;
+    }
+
+    .unsent {
+        margin-bottom: 10px;
+        max-width: 80%;
+        width: fit-content;
+        padding: 8px;
+        border-radius: 10px;
+        color: gray; /* Texte en gris */
+        background-color: #f0f0f0; /* Fond légèrement gris */
+        margin-left: auto;
+        margin-right: 0;
+        text-align: right;
+        word-wrap: break-word;
     }
 </style>

@@ -5,19 +5,26 @@
 @inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
 @inject ConversationService ConversationService
+@inject MessageService MessageService
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+
 
 <p>@isConnected</p>
+<p>savedUnsentMessages.Count : @savedUnsentMessages?.Count </p>
 <PageTitle>Home</PageTitle>
-<LocalStorageTesting/>
 <MudContainer Class="messagerie-container pa-0">
     <MudItem xs="12" sm="4" Class="contacts-list-container">
         <ContactsList OnContactSelected="HandleContactSelected" conversations="conversations" />
     </MudItem>
     <MudItem xs="12" sm="8" Class="message-display-container">
         <MudPaper Elevation="4" Class="message-paper">
-            <ConversationMessages ConversationName="test"
+            <ConversationMessages
+            ConversationName="test"
             RecipientName="@RecipientName"
-            OnReloadConversations="ReloadConversation" />
+            OnReloadConversations="ReloadConversation"
+            InternetStatus="isConnected"
+            UnsentMessages="UnsentMessages"
+            />
         </MudPaper>
     </MudItem>
 </MudContainer>
@@ -27,6 +34,8 @@
     private string RecipientName { get; set; } = string.Empty;
     private List<Conversation> conversations { get; set; } = new List<Conversation>();
     private bool isConnected { get; set; } = false;
+    public List<MessageCollection> UnsentMessages { get; set; } = new();
+    private List<MessageCollection>? savedUnsentMessages;
 
     protected override async Task OnInitializedAsync()
     {
@@ -39,7 +48,6 @@
         {
             NavigationManager.NavigateTo("/login");
         }
-        // conversations = await ConversationService.GetConversationsForCurrentUserAsync();
     }
 
     private void HandleContactSelected(string recipientName)
@@ -47,19 +55,50 @@
         RecipientName = recipientName;
     }
 
-    private void HandleConnectionStatusChanged(bool isConnected)
+    private bool isHandlingConnectionChange = false;
+
+    private async void HandleConnectionStatusChanged(bool isConnected)
     {
-        this.isConnected = isConnected;
+        if (isHandlingConnectionChange) return; // Si déjà en cours, on ignore
+        isHandlingConnectionChange = true;
+
+        try
+        {
+            this.isConnected = isConnected;
+
+            if (isConnected)
+            {
+                savedUnsentMessages = await LocalStorage.GetItemAsync<List<MessageCollection>>("savedUnsentMessages");
+                if (savedUnsentMessages != null && savedUnsentMessages.Count != 0)
+                {
+                    // Envoi des messages non envoyés
+                    await MessageService.SendMessagesAsync(savedUnsentMessages);
+
+                    // Supprime les messages stockés après envoi
+                    await LocalStorage.RemoveItemAsync("savedUnsentMessages");
+                    savedUnsentMessages = new List<MessageCollection>();
+                }
+            }
+            else
+            {
+                // Stocker les messages en local si déconnecté
+                savedUnsentMessages = await LocalStorage.GetItemAsync<List<MessageCollection>>("savedUnsentMessages");
+            }
+        }
+        finally
+        {
+            isHandlingConnectionChange = false;
+        }
     }
+
 
     private async void ReloadConversation()
     {
-        Console.WriteLine("ReloadConversation has been called."); // Ajout du message de debug
         conversations = await ConversationService.GetConversationsForCurrentUserAsync();
         StateHasChanged();
     }
-
 }
+
 
 <style>
     .messagerie-container {

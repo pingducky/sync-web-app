@@ -24,5 +24,6 @@ namespace TP_Messagerie.Data
 
         [BsonElement("readAt")]
         public DateTime? ReadAt { get; set; }
+        public bool IsSent { get; set; }
     }
 }

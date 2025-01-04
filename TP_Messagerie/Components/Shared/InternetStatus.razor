@@ -7,7 +7,7 @@
     private string icon = Icons.Material.Filled.WifiOff;
     private string ConnectionClass => $"connection-status {(icon == Icons.Material.Filled.Wifi ? "connected" : "disconnected")}";
     private System.Timers.Timer pingTimer;
-    private readonly string testUrl = "https://www.google.com";
+    private readonly string testUrl = "https://www.facebook.com";
 
     [Parameter]
     public EventCallback<bool> OnConnectionStatusChanged { get; set; } // Paramètre pour le parent
@@ -41,7 +41,6 @@
             icon = Icons.Material.Filled.WifiOff;
         }
 
-        // Ensure UI updates and callback invocation occur on the UI thread
         await InvokeAsync(async () =>
         {
             // Update component state

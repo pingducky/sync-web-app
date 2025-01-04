@@ -54,7 +54,7 @@ else
     private async Task DeleteMessage()
     {
         // Supprimer le message du local storage
-        await LocalStorage.RemoveItemAsync("savedMessage");
+        await LocalStorage.RemoveItemAsync("savedUnsentMessages");
 
         // Réinitialiser l'objet en mémoire
         storedMessage = null;

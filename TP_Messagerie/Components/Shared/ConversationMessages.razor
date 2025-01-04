@@ -5,7 +5,9 @@
 @inject MessageService MessageService
 @inject UserSession UserSession
 @inject ConversationService ConversationService
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
+<p>@InternetStatus</p>
 @if (!string.IsNullOrEmpty(RecipientName))
 {
     <MudContainer Class="chat-container">
@@ -15,8 +17,17 @@
                 <Message Content="@message.Content"
                 TimeStamp="@message.SentAt"
                 IsSentByCurrentUser="@(UserSession.UserName == message.Sender)"
-                Sender="@message.Sender" />
+                Sender="@message.Sender"
+                IsSent="@message.IsSent" />
             }
+            @* @foreach (var message in UnsentMessages.OrderBy(m => m.SentAt)) *@
+            @* { *@
+            @*     <Message Content="@message.Content" *@
+            @*              TimeStamp="@message.SentAt" *@
+            @*              IsSentByCurrentUser="@(UserSession.UserName == message.Sender)" *@
+            @*              Sender="@message.Sender" *@
+            @*              IsSent="false" /> *@
+            @* } *@
         </MudItem>
 
         <MudContainer Class="input-container">
@@ -47,6 +58,9 @@
 
     [Parameter]
     public EventCallback OnReloadConversations { get; set; }
+
+    [Parameter]
+    public bool InternetStatus { get; set; } = false;
     #endregion
 
     #region Variables locales
@@ -57,8 +71,10 @@
         set => _messages = value;
     }
 
-    private string _recipientName = string.Empty;
+    [Parameter]
+    public List<MessageCollection> UnsentMessages { get; set; } = new();
 
+    private string _recipientName = string.Empty;
     private string newMessageContent = string.Empty;
     #endregion
 
@@ -67,8 +83,21 @@
     {
         if (!string.IsNullOrEmpty(RecipientName))
         {
+            // Charger les messages de la base de données pour la conversation
             Messages = await MessageService.GetMessagesBetweenUsersAsync(UserSession.UserName, RecipientName);
-            StateHasChanged();
+
+            // Ajouter les messages non envoyés à la liste des messages
+            if (UnsentMessages != null && UnsentMessages.Count > 0)
+            {
+                foreach (var unsentMessage in UnsentMessages)
+                {
+                    // Assurez-vous que le statut est `false` pour les messages non envoyés
+                    unsentMessage.IsSent = false;
+                }
+                Messages.AddRange(UnsentMessages); // Ajouter les messages non envoyés à la liste des messages
+            }
+
+            StateHasChanged();  // Mettre à jour l'UI
         }
     }
 
@@ -81,26 +110,39 @@
                     Sender = UserSession.UserName,
                     Receiver = RecipientName,
                     Content = newMessageContent,
-                    SentAt = DateTime.Now
+                    SentAt = DateTime.Now,
+                    IsSent = true
                 };
 
-            await MessageService.SendMessageAsync(message);
-            await ConversationService.UpdateLastMessageAsync(newMessageContent, RecipientName);
-            await OnReloadConversations.InvokeAsync(); // Appel de la méthode de rafraîchissement
-            newMessageContent = string.Empty;
-            LoadMessages();
+            if (InternetStatus)
+            {
+                // Si on est connecté, on envoie le message
+                await MessageService.SendMessageAsync(message);
+                await ConversationService.UpdateLastMessageAsync(newMessageContent, RecipientName);
+                await OnReloadConversations.InvokeAsync();
+                LoadMessages();
+            }
+            else
+            {
+                // Si on est hors ligne, on garde les messages non envoyés en local
+                List<MessageCollection> savedUnsentMessages = await LocalStorage.GetItemAsync<List<MessageCollection>>("savedUnsentMessages") ?? new List<MessageCollection>();
+                savedUnsentMessages.Add(message);
+                newMessageContent = string.Empty;
+                await LocalStorage.SetItemAsync("savedUnsentMessages", savedUnsentMessages);
+                UnsentMessages = savedUnsentMessages;
+            }
         }
     }
     #endregion
 
     #region Evènement
-    protected override async Task OnInitializedAsync() {
+    protected override async Task OnInitializedAsync()
+    {
+        // Charger les messages lors de l'initialisation
         await OnReloadConversations.InvokeAsync();
     }
     #endregion
-
 }
-
 <style>
     .chat-container {
         display: flex;

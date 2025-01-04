@@ -15,6 +15,9 @@ namespace TP_Messagerie.Services
         public async Task SendMessageAsync(MessageCollection message) =>
             await _messages.InsertOneAsync(message);
 
+        public async Task SendMessagesAsync(List<MessageCollection> messages) =>
+            await _messages.InsertManyAsync(messages);
+
         public async Task DeleteMessageAsync(string messageId) =>
             await _messages.DeleteOneAsync(m => m.Id == messageId);
 
