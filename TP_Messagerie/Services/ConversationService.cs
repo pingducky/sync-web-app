@@ -58,5 +58,42 @@ namespace TP_Messagerie.Services
             }
 
         }
+
+        public async Task UpdateLastMessagesAsync(List<Conversation> conversations)
+        {
+            var tasks = conversations.Select(async conversation =>
+            {
+                // Participants dans la conversation
+                var participants = conversation.Participants;
+
+                // Construction du filtre pour vérifier si tous les participants sont présents
+                var filter = Builders<Conversation>.Filter.All(c => c.Participants, participants);
+
+                // Vérifiez si une conversation existe déjà
+                var existingConversation = await _conversations.Find(filter).FirstOrDefaultAsync();
+
+                if (existingConversation != null)
+                {
+                    // Mise à jour des champs pour une conversation existante
+                    var updateDefinition = Builders<Conversation>.Update
+                        .Set(c => c.LastMessage, conversation.LastMessage)
+                        .Set(c => c.LastUserMessage, conversation.LastUserMessage)
+                        .Set(c => c.LastUpdated, DateTime.UtcNow);
+
+                    await _conversations.UpdateOneAsync(filter, updateDefinition);
+                }
+                else
+                {
+                    // Mise à jour de la propriété `LastUpdated`
+                    conversation.LastUpdated = DateTime.UtcNow;
+
+                    // Insertion de la nouvelle conversation
+                    await _conversations.InsertOneAsync(conversation);
+                }
+            });
+
+            // Exécute toutes les tâches de manière asynchrone
+            await Task.WhenAll(tasks);
+        }
     }
 }

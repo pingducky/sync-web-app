@@ -18,7 +18,7 @@
             <ConversationMessages
             ConversationName="test"
             RecipientName="@RecipientName"
-            OnReloadConversations="ReloadConversation"
+            OnReloadConversations="LoadConversation"
             InternetStatus="isConnected"
             UnsentMessages="UnsentMessages"
             Messages="Messages"
@@ -34,6 +34,7 @@
     private bool isConnected { get; set; } = false;
     public List<MessageCollection> UnsentMessages { get; set; } = new();
     private List<MessageCollection>? savedUnsentMessages;
+    private List<Conversation>? savedNotUpdatedConversations;
     private List<MessageCollection>? Messages = new List<MessageCollection>();
 
 
@@ -61,7 +62,6 @@
     {
         if (isHandlingConnectionChange) return; // Si déjà en cours, on ignore
         isHandlingConnectionChange = true;
-
         try
         {
             this.isConnected = isConnected;
@@ -79,6 +79,25 @@
                     savedUnsentMessages = new List<MessageCollection>();
                     LoadMessages();
                 }
+
+                // Récupération des conversations non mises à jour depuis le stockage local
+                var savedNotUpdatedConversations = await LocalStorage.GetItemAsync<List<Conversation>>("savedNotUpdatedConversations");
+
+                if (savedNotUpdatedConversations != null && savedNotUpdatedConversations.Count != 0)
+                {
+                    if (savedNotUpdatedConversations.Count > 0)
+                    {
+                        // Mettre à jour les dernières conversations via le service
+                        await ConversationService.UpdateLastMessagesAsync(savedNotUpdatedConversations);
+
+                        // Si les conversations ont été mises à jour avec succès, les supprimer du stockage local
+                        await LocalStorage.RemoveItemAsync("savedNotUpdatedConversations");
+                        savedNotUpdatedConversations = new List<Conversation>();
+                        LoadConversation();
+                    }
+                }
+
+
             }
             else
             {
@@ -97,7 +116,9 @@
         if (!string.IsNullOrEmpty(RecipientName))
         {
             // Charger les messages de la base de données pour la conversation
-            Messages = await MessageService.GetMessagesBetweenUsersAsync(UserSession.UserName, RecipientName);
+            if(isConnected) {
+                Messages = await MessageService.GetMessagesBetweenUsersAsync(UserSession.UserName, RecipientName);
+            }
 
             // Ajouter les messages non envoyés à la liste des messages
             if (UnsentMessages != null && UnsentMessages.Count > 0)
@@ -115,7 +136,7 @@
     }
 
 
-    private async void ReloadConversation()
+    private async void LoadConversation()
     {
         conversations = await ConversationService.GetConversationsForCurrentUserAsync();
         StateHasChanged();
