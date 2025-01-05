@@ -1,12 +1,14 @@
 ﻿@page "/"
 @using MudBlazor
 @using TP_Messagerie.Services
+@using Microsoft.AspNetCore.SignalR.Client
 @inject UserSession UserSession
 @inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
 @inject ConversationService ConversationService
 @inject MessageService MessageService
 @inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+@inject IJSRuntime JS
 
 <PageTitle>Home</PageTitle>
 <MudContainer Class="messagerie-container pa-0">
@@ -36,6 +38,7 @@
     private List<MessageCollection>? savedUnsentMessages;
     private List<Conversation>? savedNotUpdatedConversations;
     private List<MessageCollection>? Messages = new List<MessageCollection>();
+    private HubConnection? hubConnection;
 
 
     protected override async Task OnInitializedAsync()
@@ -44,6 +47,18 @@
         {
             Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomStart;
             Snackbar.Add("Vous êtes connecté en tant que " + UserSession.UserName, Severity.Info);
+
+            hubConnection = new HubConnectionBuilder()
+                .WithUrl(NavigationManager.ToAbsoluteUri("/messagehub"))
+                .Build();
+
+            hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+            {
+                Messages.Add(new MessageCollection { Sender = user, Content = message });
+                InvokeAsync(StateHasChanged);
+            });
+
+            await hubConnection.StartAsync();
         }
         else
         {

@@ -20,6 +20,15 @@
                     Sender="@message.Sender"
                     IsSent="@message.IsSent" />
                 }
+
+                if (message.Receiver != RecipientName)
+                {
+                    <Message Content="@message.Content"
+                             TimeStamp="@message.SentAt"
+                             IsSentByCurrentUser="@(UserSession.UserName == message.Sender)"
+                             Sender="@message.Sender"
+                             IsSent="@message.IsSent" />
+                }
             }
         </MudItem>
 

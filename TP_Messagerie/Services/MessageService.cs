@@ -1,19 +1,26 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.AspNetCore.SignalR;
+using MongoDB.Driver;
 using TP_Messagerie.Data;
+using TP_Messagerie.Hubs;
 
 namespace TP_Messagerie.Services
 {
     public class MessageService
     {
         private readonly IMongoCollection<MessageCollection> _messages;
+        private readonly IHubContext<MessageHub> _hubContext;
 
-        public MessageService(IMongoDatabase mongoDatabase)
+        public MessageService(IMongoDatabase mongoDatabase, IHubContext<MessageHub> hubContext)
         {
             _messages = mongoDatabase.GetCollection<MessageCollection>("messages");
+            _hubContext = hubContext;
         }
 
-        public async Task SendMessageAsync(MessageCollection message) =>
+        public async Task SendMessageAsync(MessageCollection message)
+        {
+            await _hubContext.Clients.All.SendAsync("ReceiveMessage", message.Sender, message.Content);
             await _messages.InsertOneAsync(message);
+        }
 
         public async Task SendMessagesAsync(List<MessageCollection> messages) =>
             await _messages.InsertManyAsync(messages);

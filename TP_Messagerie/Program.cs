@@ -5,6 +5,7 @@ using MudBlazor.Services;
 using TP_Messagerie.Services;
 using TP_Messagerie.Data;
 using Blazored.LocalStorage;
+using TP_Messagerie.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +49,8 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<MessageService>();
 builder.Services.AddSingleton<AuthService>();
+builder.Services.AddSignalR();
+
 
 var app = builder.Build();
 
@@ -66,5 +69,7 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+
+app.MapHub<MessageHub>("/messagehub");
 
 app.Run();
