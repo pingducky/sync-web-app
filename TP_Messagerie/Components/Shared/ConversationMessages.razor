@@ -139,6 +139,10 @@
         }
 
         newMessageContent = string.Empty;
+
+        List<Conversation> savedNotUpdatedConversations = await LocalStorage.GetItemAsync<List<Conversation>>("savedNotUpdatedConversations") ?? new List<Conversation>();
+        savedNotUpdatedConversations.Add(conversation);
+        await LocalStorage.SetItemAsync("savedNotUpdatedConversations", savedNotUpdatedConversations);
     }
 
 
