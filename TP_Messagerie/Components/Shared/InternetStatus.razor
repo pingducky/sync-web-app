@@ -16,7 +16,7 @@
     #region Evènements
     protected override void OnInitialized()
     {
-        pingTimer = new System.Timers.Timer(100);
+        pingTimer = new System.Timers.Timer(1000);
         pingTimer.Elapsed += async (_, __) => await CheckConnection();
         pingTimer.AutoReset = true;
         pingTimer.Start();
