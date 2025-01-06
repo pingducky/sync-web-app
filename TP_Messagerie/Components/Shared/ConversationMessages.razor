@@ -41,6 +41,8 @@
 
 @code {
     #region Paramètres
+    [Inject]
+    private Cassandra.ISession CassandraSession { get; set; } = default!;
     [Parameter]
     public required string ConversationName { get; set; }
 
@@ -105,18 +107,26 @@
                     LastUpdated = DateTime.Now
                 };
 
+            Log log = new Log(
+                username: RecipientName,
+                action: UserAction.SendMessage,
+                timestamp: DateTime.Now,
+                details: message.Content
+                );
+
+
             if (InternetStatus)
             {
-                await HandleOnlineMessageAsync(message);
+                await HandleOnlineMessageAsync(message, log);
             }
             else
             {
-                await HandleOfflineMessageAsync(message, conversation);
+                await HandleOfflineMessageAsync(message, conversation, log);
             }
         }
     }
 
-    private async Task HandleOfflineMessageAsync(MessageCollection message, Conversation conversation)
+    private async Task HandleOfflineMessageAsync(MessageCollection message, Conversation conversation, Log log)
     {
         // Récupérer les messages non envoyés en local
         List<MessageCollection> savedUnsentMessages = await LocalStorage.GetItemAsync<List<MessageCollection>>("savedUnsentMessages") ?? new List<MessageCollection>();
@@ -151,16 +161,24 @@
         List<Conversation> savedNotUpdatedConversations = await LocalStorage.GetItemAsync<List<Conversation>>("savedNotUpdatedConversations") ?? new List<Conversation>();
         savedNotUpdatedConversations.Add(conversation);
         await LocalStorage.SetItemAsync("savedNotUpdatedConversations", savedNotUpdatedConversations);
+
+        List<Log>? savedUnsentLogs = await LocalStorage.GetItemAsync<List<Log>>("savedUnsentLogs") ?? new List<Log>();
+        log.Details = message.Content;
+        savedUnsentLogs.Add(log);
+        await LocalStorage.SetItemAsync("savedUnsentLogs", savedUnsentLogs);
     }
 
 
-    private async Task HandleOnlineMessageAsync(MessageCollection message)
+    private async Task HandleOnlineMessageAsync(MessageCollection message, Log log)
     {
         // Si on est connecté, on envoie le message
         await MessageService.SendMessageAsync(message);
         await ConversationService.UpdateLastMessageAsync(message.Content, RecipientName);
         await OnReloadConversations.InvokeAsync();
         await OnLoadMessages.InvokeAsync();
+
+        var loggerService = new LoggerService(CassandraSession);
+        loggerService.Log(log);
         newMessageContent = string.Empty;
     }
 

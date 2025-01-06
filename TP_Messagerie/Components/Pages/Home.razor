@@ -31,6 +31,8 @@
 <InternetStatus OnConnectionStatusChanged="HandleConnectionStatusChanged"/>
 
 @code {
+    [Inject]
+    private Cassandra.ISession CassandraSession { get; set; } = default!;
     private string RecipientName { get; set; } = string.Empty;
     private List<Conversation> conversations { get; set; } = new List<Conversation>();
     private bool isConnected { get; set; } = false;
@@ -83,6 +85,7 @@
 
             if (isConnected)
             {
+                // messages
                 savedUnsentMessages = await LocalStorage.GetItemAsync<List<MessageCollection>>("savedUnsentMessages"); // Microsoft.JSInterop.JSDisconnectedException : 'JavaScript interop calls cannot be issued at this time. This is because the circuit has disconnected and is being disposed.'
                 if (savedUnsentMessages != null && savedUnsentMessages.Count != 0)
                 {
@@ -95,7 +98,7 @@
                     LoadMessages();
                 }
 
-                // Récupération des conversations non mises à jour depuis le stockage local
+                // conversations
                 var savedNotUpdatedConversations = await LocalStorage.GetItemAsync<List<Conversation>>("savedNotUpdatedConversations");
 
                 if (savedNotUpdatedConversations != null && savedNotUpdatedConversations.Count != 0)
@@ -112,7 +115,18 @@
                     }
                 }
 
+                // logs
+                List<Log>? savedUnsentLogs = await LocalStorage.GetItemAsync<List<Log>>("savedUnsentLogs");
 
+                if (savedUnsentLogs != null && savedUnsentLogs.Count != 0)
+                {
+                    // Envoi des logs non envoyés
+                    var loggerService = new LoggerService(CassandraSession);
+                    loggerService.Logs(savedUnsentLogs);
+
+                    // Supprime les messages stockés après envoi
+                    await LocalStorage.RemoveItemAsync("savedUnsentLogs");
+                }
             }
             else
             {
