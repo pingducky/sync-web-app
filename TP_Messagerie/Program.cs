@@ -14,16 +14,39 @@ builder.Services.AddScoped<ConversationService>();
 
 builder.Services.AddBlazoredLocalStorage();
 
-// Cassandra configuration
 builder.Services.AddSingleton<Cassandra.ISession>(sp =>
 {
-    var secureConnectPath = Path.Combine(AppContext.BaseDirectory, "Properties", "secure-connect-tp-messagerie.zip");
+    // Connexion à Cassandra local (conteneur Docker)
     var cluster = Cluster.Builder()
-        .WithCloudSecureConnectionBundle(secureConnectPath)
-        .WithCredentials("nMkNQtqMOSKhwRUUHXdQYfEK", "r0j,fZrULlTtsQX17_SQU0iEmSHYP2ANwZKgy+ZmQ38lHSPzGLezGRmyY3b2WyHc+NqrXhQKf+wye2NbHkzmRJpJjj2OWU87aTmDeGzg9s.foxDCRFtpJFmZRich4aD7")
+        .AddContactPoint("127.0.0.1") // Adresse IP du conteneur Cassandra (localhost exposé sur 9042)
+        .WithPort(9042) // Port par défaut de Cassandra
         .Build();
-    return cluster.Connect("messagerie");
+
+    var session = cluster.Connect();
+
+    // Création du keyspace si nécessaire
+    session.Execute(@"
+        CREATE KEYSPACE IF NOT EXISTS messagerie
+        WITH replication = { 'class': 'SimpleStrategy', 'replication_factor': 1 }
+    ");
+
+    // Utiliser le keyspace "messagerie"
+    session.ChangeKeyspace("messagerie");
+
+    session.Execute(@"
+    CREATE TABLE IF NOT EXISTS user_actions (
+        username TEXT,
+        action TEXT,
+        timestamp TIMESTAMP,
+        details TEXT,
+        PRIMARY KEY (username, timestamp)
+    )
+");
+
+    return session;
 });
+
+
 
 // MongoDB configuration
 builder.Services.AddSingleton<IMongoClient>(sp =>
@@ -49,8 +72,8 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<MessageService>();
 builder.Services.AddSingleton<AuthService>();
+builder.Services.AddSingleton<LoggerService>();
 builder.Services.AddSignalR();
-
 
 var app = builder.Build();
 
@@ -58,7 +81,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

@@ -4,6 +4,7 @@
 @inject UserService UserService
 @inject NavigationManager NavigationManager
 @inject UserSession UserSession
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
 
 
 <MudContainer MaxWidth="MaxWidth.Small" Class="d-flex justify-center align-center" Style="height: 100vh;">
@@ -40,3 +41,4 @@
     </MudCardContent>
   </MudCard>
 </MudContainer>
+<InternetStatus OnConnectionStatusChanged="HandleConnectionStatusChanged" />

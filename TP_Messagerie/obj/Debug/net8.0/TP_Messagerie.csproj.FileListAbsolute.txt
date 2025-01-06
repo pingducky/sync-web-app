@@ -126,3 +126,13 @@ C:\Users\antho\OneDrive\Documents\Cours\M1\DesignPattern_Persistance\Persistance
 C:\Users\antho\OneDrive\Documents\Cours\M1\DesignPattern_Persistance\Persistance\TP_Messagerie\TP_Messagerie\TP_Messagerie\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
 C:\Users\antho\OneDrive\Documents\Cours\M1\DesignPattern_Persistance\Persistance\TP_Messagerie\TP_Messagerie\TP_Messagerie\bin\Debug\net8.0\Microsoft.Extensions.Features.dll
 C:\Users\antho\OneDrive\Documents\Cours\M1\DesignPattern_Persistance\Persistance\TP_Messagerie\TP_Messagerie\TP_Messagerie\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll
+C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\bin\Debug\net8.0\Microsoft.AspNetCore.Connections.Abstractions.dll
+C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Connections.Client.dll
+C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Connections.Common.dll
+C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Client.dll
+C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Client.Core.dll
+C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Common.dll
+C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.dll
+C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\bin\Debug\net8.0\Microsoft.Extensions.Features.dll
+C:\PRIVE\Cours\Persistence\sync-web-app\TP_Messagerie\bin\Debug\net8.0\Microsoft.Extensions.Logging.dll

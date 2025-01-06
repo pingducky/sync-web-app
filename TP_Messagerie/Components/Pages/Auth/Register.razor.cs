@@ -9,7 +9,8 @@ namespace TP_Messagerie.Components.Pages.Auth
     public partial class Register
     {
         #region Paramètres
-
+        [Inject]
+        private Cassandra.ISession CassandraSession { get; set; } = default!;
         public class Credential {
             public string Username { get; set; } = "";
             public string Password { get; set; } = "";
@@ -20,6 +21,10 @@ namespace TP_Messagerie.Components.Pages.Auth
         private Credential credential = new Credential();
         public bool IsLoading { get; set; }
         public string? ErrorMessage { get; set; }
+
+
+        private bool isHandlingConnectionChange = false;
+        private bool isConnected { get; set; } = false;
 
         #endregion
 
@@ -39,7 +44,29 @@ namespace TP_Messagerie.Components.Pages.Auth
             };
 
             bool result = await AuthService.RegisterAsync(user);
-            if(result)
+
+            Log log = new Log(
+             username: user.Username,
+             action: UserAction.Register,
+             timestamp: DateTime.Now,
+             details: result == null ? "Register fail" : "Register Successful"
+            );
+
+            if (isConnected)
+            {
+                var loggerService = new LoggerService(CassandraSession);
+                loggerService.Log(log);
+            }
+            else
+            {
+                List<Log>? savedUnsentLogs = await LocalStorage.GetItemAsync<List<Log>>("savedUnsentLogs") ?? new List<Log>();
+                log.Details = "No connexion";
+                savedUnsentLogs.Add(log);
+                await LocalStorage.SetItemAsync("savedUnsentLogs", savedUnsentLogs);
+            }
+
+
+            if (result)
             {
                 UserSession.UserId = user.Id;
                 UserSession.UserName = user.Username;
@@ -53,6 +80,38 @@ namespace TP_Messagerie.Components.Pages.Auth
                 IsLoading = false;
             }
 
+        }
+
+        private async void HandleConnectionStatusChanged(bool isConnected)
+        {
+            if (isHandlingConnectionChange) return;
+            isHandlingConnectionChange = true;
+            try
+            {
+                this.isConnected = isConnected;
+
+                if (isConnected)
+                {
+                    List<Log>? savedUnsentLogs = await LocalStorage.GetItemAsync<List<Log>>("savedUnsentLogs");
+
+                    if (savedUnsentLogs != null && savedUnsentLogs.Count != 0)
+                    {
+                        // Envoi des logs non envoyés
+                        var loggerService = new LoggerService(CassandraSession);
+                        loggerService.Logs(savedUnsentLogs);
+
+                        // Supprime les messages stockés après envoi
+                        await LocalStorage.RemoveItemAsync("savedUnsentLogs");
+                    }
+                }
+                else
+                {
+                }
+            }
+            finally
+            {
+                isHandlingConnectionChange = false;
+            }
         }
         #endregion
     }

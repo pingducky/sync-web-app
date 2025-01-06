@@ -83,7 +83,7 @@
 
             if (isConnected)
             {
-                savedUnsentMessages = await LocalStorage.GetItemAsync<List<MessageCollection>>("savedUnsentMessages"); // Todo : fix bug
+                savedUnsentMessages = await LocalStorage.GetItemAsync<List<MessageCollection>>("savedUnsentMessages"); // Microsoft.JSInterop.JSDisconnectedException : 'JavaScript interop calls cannot be issued at this time. This is because the circuit has disconnected and is being disposed.'
                 if (savedUnsentMessages != null && savedUnsentMessages.Count != 0)
                 {
                     // Envoi des messages non envoyés

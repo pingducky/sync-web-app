@@ -4881,23 +4881,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\antho\\.nuget\\packages\\": {},
+    "C:\\Users\\hugo1\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\antho\\OneDrive\\Documents\\Cours\\M1\\DesignPattern_Persistance\\Persistance\\TP_Messagerie\\TP_Messagerie\\TP_Messagerie\\TP_Messagerie.csproj",
+      "projectUniqueName": "C:\\PRIVE\\Cours\\Persistence\\sync-web-app\\TP_Messagerie\\TP_Messagerie.csproj",
       "projectName": "TP_Messagerie",
-      "projectPath": "C:\\Users\\antho\\OneDrive\\Documents\\Cours\\M1\\DesignPattern_Persistance\\Persistance\\TP_Messagerie\\TP_Messagerie\\TP_Messagerie\\TP_Messagerie.csproj",
-      "packagesPath": "C:\\Users\\antho\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\antho\\OneDrive\\Documents\\Cours\\M1\\DesignPattern_Persistance\\Persistance\\TP_Messagerie\\TP_Messagerie\\TP_Messagerie\\obj\\",
+      "projectPath": "C:\\PRIVE\\Cours\\Persistence\\sync-web-app\\TP_Messagerie\\TP_Messagerie.csproj",
+      "packagesPath": "C:\\Users\\hugo1\\.nuget\\packages\\",
+      "outputPath": "C:\\PRIVE\\Cours\\Persistence\\sync-web-app\\TP_Messagerie\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\antho\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\hugo1\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4906,7 +4906,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4924,7 +4923,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.100"
     },
     "frameworks": {
       "net8.0": {
@@ -4970,7 +4970,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
