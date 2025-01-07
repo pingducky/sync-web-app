@@ -71,6 +71,8 @@
     private void HandleContactSelected(string recipientName)
     {
         RecipientName = recipientName;
+        this.Messages = new List<MessageCollection>();
+        this.UnsentMessages = new List<MessageCollection>();
     }
 
     private bool isHandlingConnectionChange = false;

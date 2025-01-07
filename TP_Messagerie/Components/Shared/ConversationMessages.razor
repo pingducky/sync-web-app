@@ -144,7 +144,7 @@
         // Ajouter les messages non envoyés dans la liste principale uniquement s'ils ne sont pas déjà présents
         foreach (var unsentMessage in UnsentMessages)
         {
-            if (!Messages.Any(m => m.Content == unsentMessage.Content && m.SentAt == unsentMessage.SentAt))
+            if (!Messages.Any(m => m.Content == unsentMessage.Content && m.SentAt == unsentMessage.SentAt) && unsentMessage.Receiver == RecipientName)
             {
                 Messages.Add(unsentMessage);
             }
