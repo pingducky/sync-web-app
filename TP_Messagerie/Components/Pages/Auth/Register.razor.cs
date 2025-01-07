@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MongoDB.Bson;
-using System.Runtime.CompilerServices;
 using TP_Messagerie.Data;
 using TP_Messagerie.Services;
 
@@ -11,7 +10,8 @@ namespace TP_Messagerie.Components.Pages.Auth
         #region Paramètres
         [Inject]
         private Cassandra.ISession CassandraSession { get; set; } = default!;
-        public class Credential {
+        public class Credential
+        {
             public string Username { get; set; } = "";
             public string Password { get; set; } = "";
             public string Firstname { get; set; } = "";
@@ -22,18 +22,17 @@ namespace TP_Messagerie.Components.Pages.Auth
         public bool IsLoading { get; set; }
         public string? ErrorMessage { get; set; }
 
-
         private bool isHandlingConnectionChange = false;
         private bool isConnected { get; set; } = false;
 
+        private bool shouldProcessUnsentLogs = false; // Indicateur pour différer le traitement des logs non envoyés
         #endregion
 
         #region Méthodes
         private async void OnValidSubmit()
         {
-            var test = await UserService.GetAllUsersAsync();
-
             IsLoading = true;
+
             User user = new User
             {
                 Id = ObjectId.GenerateNewId().ToString(),
@@ -46,10 +45,10 @@ namespace TP_Messagerie.Components.Pages.Auth
             bool result = await AuthService.RegisterAsync(user);
 
             Log log = new Log(
-             username: user.Username,
-             action: UserAction.Register,
-             timestamp: DateTime.Now,
-             details: result == null ? "Register fail" : "Register Successful"
+                username: user.Username,
+                action: UserAction.Register,
+                timestamp: DateTime.Now,
+                details: result ? "Register Successful" : "Register fail"
             );
 
             if (isConnected)
@@ -59,12 +58,9 @@ namespace TP_Messagerie.Components.Pages.Auth
             }
             else
             {
-                List<Log>? savedUnsentLogs = await LocalStorage.GetItemAsync<List<Log>>("savedUnsentLogs") ?? new List<Log>();
-                log.Details = "No connexion";
-                savedUnsentLogs.Add(log);
-                await LocalStorage.SetItemAsync("savedUnsentLogs", savedUnsentLogs);
+                // Marque pour traitement ultérieur après rendu
+                shouldProcessUnsentLogs = true;
             }
-
 
             if (result)
             {
@@ -79,7 +75,25 @@ namespace TP_Messagerie.Components.Pages.Auth
                 ErrorMessage = "L'utilisateur existe déjà !";
                 IsLoading = false;
             }
+        }
 
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (shouldProcessUnsentLogs)
+            {
+                shouldProcessUnsentLogs = false;
+
+                // Récupérer et traiter les logs non envoyés
+                List<Log>? savedUnsentLogs = await LocalStorage.GetItemAsync<List<Log>>("savedUnsentLogs") ?? new List<Log>();
+                if (savedUnsentLogs.Count > 0)
+                {
+                    var loggerService = new LoggerService(CassandraSession);
+                    loggerService.Logs(savedUnsentLogs);
+
+                    // Supprime les logs après leur envoi
+                    await LocalStorage.RemoveItemAsync("savedUnsentLogs");
+                }
+            }
         }
 
         private async void HandleConnectionStatusChanged(bool isConnected)
@@ -92,20 +106,8 @@ namespace TP_Messagerie.Components.Pages.Auth
 
                 if (isConnected)
                 {
-                    List<Log>? savedUnsentLogs = await LocalStorage.GetItemAsync<List<Log>>("savedUnsentLogs");
-
-                    if (savedUnsentLogs != null && savedUnsentLogs.Count != 0)
-                    {
-                        // Envoi des logs non envoyés
-                        var loggerService = new LoggerService(CassandraSession);
-                        loggerService.Logs(savedUnsentLogs);
-
-                        // Supprime les messages stockés après envoi
-                        await LocalStorage.RemoveItemAsync("savedUnsentLogs");
-                    }
-                }
-                else
-                {
+                    // Marque pour traitement ultérieur après rendu
+                    shouldProcessUnsentLogs = true;
                 }
             }
             finally

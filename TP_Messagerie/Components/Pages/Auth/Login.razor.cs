@@ -65,9 +65,31 @@ namespace TP_Messagerie.Components.Pages.Auth
             }
         }
 
+        private bool shouldProcessUnsentLogs = false; // Indicateur pour différer le traitement des logs non envoyés
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (shouldProcessUnsentLogs)
+            {
+                shouldProcessUnsentLogs = false;
+
+                // Récupérer et traiter les logs non envoyés
+                List<Log>? savedUnsentLogs = await LocalStorage.GetItemAsync<List<Log>>("savedUnsentLogs");
+                if (savedUnsentLogs != null && savedUnsentLogs.Count != 0)
+                {
+                    var loggerService = new LoggerService(CassandraSession);
+                    loggerService.Logs(savedUnsentLogs);
+
+                    // Supprime les logs une fois envoyés
+                    await LocalStorage.RemoveItemAsync("savedUnsentLogs");
+                }
+            }
+        }
+
         private async void HandleConnectionStatusChanged(bool isConnected)
         {
             if (isHandlingConnectionChange) return;
+
             isHandlingConnectionChange = true;
             try
             {
@@ -75,20 +97,8 @@ namespace TP_Messagerie.Components.Pages.Auth
 
                 if (isConnected)
                 {
-                    List<Log>? savedUnsentLogs = await LocalStorage.GetItemAsync<List<Log>>("savedUnsentLogs");
-
-                    if (savedUnsentLogs != null && savedUnsentLogs.Count != 0)
-                    {
-                        // Envoi des logs non envoyés
-                        var loggerService = new LoggerService(CassandraSession);
-                        loggerService.Logs(savedUnsentLogs);
-
-                        // Supprime les messages stockés après envoi
-                        await LocalStorage.RemoveItemAsync("savedUnsentLogs");
-                    }
-                }
-                else
-                {
+                    // Déclenche le traitement des logs non envoyés après le rendu
+                    shouldProcessUnsentLogs = true;
                 }
             }
             finally
